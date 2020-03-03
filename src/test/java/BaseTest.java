@@ -4,7 +4,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import pages.HomePage;
 
 import static org.testng.Assert.assertTrue;
@@ -23,6 +22,7 @@ abstract public class BaseTest {
 
     @BeforeMethod
     public void goHome() {
+        webDriver.manage().deleteAllCookies();
         webDriver.get(baseUrl);
         homePage = new HomePage(webDriver);
         assertTrue(homePage.isAt());
