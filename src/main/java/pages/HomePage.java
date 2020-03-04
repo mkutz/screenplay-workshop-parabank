@@ -5,17 +5,26 @@ import org.openqa.selenium.WebDriver;
 
 public class HomePage extends Page {
 
-    private By usernameInput = By.name("username");
-    private By passwordInput = By.name("password");
-    private By submitButton = By.cssSelector(".login input.button");
+    private static By usernameInput = By.name("username");
+    private static By passwordInput = By.name("password");
+    private static By submitButton = By.cssSelector(".login input.button");
 
-    private By registerLink = By.linkText("Register");
+    private static By registerLink = By.linkText("Register");
 
-    private By logoutLink = By.linkText("Log Out");
+    private static By openNewAccountLink = By.linkText("Open New Account");
+    private static By accountsOverviewLink = By.linkText("Accounts Overview");
+    private static By transferFundsLink = By.linkText("Transfer Funds");
+    private static By billPayLink = By.linkText("Bill Pay");
+    private static By findTransactionsLink = By.linkText("Find Transactions Link");
+    private static By updateContactInfoLink = By.linkText("Update Contract Info");
+    private static By requestLoanLink = By.linkText("Request Loan");
+    private static By logoutLink = By.linkText("Log Out");
+
 
     public HomePage(WebDriver webDriver) {
         super(webDriver);
     }
+
 
     public boolean isAt() {
         return webDriver.getTitle().equals("ParaBank | Welcome | Online Banking");
@@ -38,5 +47,10 @@ public class HomePage extends Page {
     public RegisterPage clickRegisterLink() {
         webDriver.findElement(registerLink).click();
         return new RegisterPage(webDriver);
+    }
+
+    public OpenNewAccountPage clickOpenNewAccountLink() {
+        webDriver.findElement(openNewAccountLink).click();
+        return new OpenNewAccountPage(webDriver);
     }
 }

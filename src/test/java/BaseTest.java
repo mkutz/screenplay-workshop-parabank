@@ -13,6 +13,8 @@ abstract public class BaseTest {
     WebDriver webDriver;
     String baseUrl = "http://parabank.parasoft.com/";
     HomePage homePage;
+    String testUsername = "screenplayer";
+    String testPassword = "Sup3rS3cr3t!";
 
     @BeforeClass
     public void setUpWebDriver() {
