@@ -53,4 +53,9 @@ public class HomePage extends Page {
         webDriver.findElement(openNewAccountLink).click();
         return new OpenNewAccountPage(webDriver);
     }
+
+    public AccountsOverviewPage clickAccountsOverviewLink() {
+        webDriver.findElement(accountsOverviewLink).click();
+        return new AccountsOverviewPage(webDriver);
+    }
 }
