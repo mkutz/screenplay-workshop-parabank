@@ -6,7 +6,7 @@ import pages.OpenNewAccountPage;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-public class AccountManagementTest extends BaseTest {
+public class OpenNewAccountTest extends BaseTest {
 
     @Test
     public void canOpenNewAccount() {
@@ -15,15 +15,11 @@ public class AccountManagementTest extends BaseTest {
         OpenNewAccountPage openNewAccountPage = homePage.clickOpenNewAccountLink();
         AccountOpenedPage accountOpenedPage = openNewAccountPage.openAccount();
 
-        assertFalse(accountOpenedPage.getNewAccountId().isBlank());
-    }
-
-    @Test
-    public void canSeeAllAccountsInAccountsOverview() {
-        homePage.login(testUsername, testPassword);
+        String newAccountId = accountOpenedPage.getNewAccountId();
+        assertFalse(newAccountId.isBlank());
 
         AccountsOverviewPage accountsOverviewPage = homePage.clickAccountsOverviewLink();
 
-        assertTrue(accountsOverviewPage.getAccountIdsList().size() > 0);
+        assertTrue(accountsOverviewPage.getAccountIdsList().contains(newAccountId));
     }
 }
