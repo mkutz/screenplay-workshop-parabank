@@ -14,10 +14,6 @@ public class HomePage extends Page {
     private static By openNewAccountLink = By.linkText("Open New Account");
     private static By accountsOverviewLink = By.linkText("Accounts Overview");
     private static By transferFundsLink = By.linkText("Transfer Funds");
-    private static By billPayLink = By.linkText("Bill Pay");
-    private static By findTransactionsLink = By.linkText("Find Transactions Link");
-    private static By updateContactInfoLink = By.linkText("Update Contract Info");
-    private static By requestLoanLink = By.linkText("Request Loan");
     private static By logoutLink = By.linkText("Log Out");
 
 
@@ -57,5 +53,10 @@ public class HomePage extends Page {
     public AccountsOverviewPage clickAccountsOverviewLink() {
         webDriver.findElement(accountsOverviewLink).click();
         return new AccountsOverviewPage(webDriver);
+    }
+
+    public TransferFundsPage clickTransferFundsLink() {
+        webDriver.findElement(transferFundsLink).click();
+        return new TransferFundsPage(webDriver);
     }
 }
