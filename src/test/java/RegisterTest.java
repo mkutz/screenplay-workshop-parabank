@@ -18,11 +18,4 @@ public class RegisterTest extends BaseTest {
 
         assertTrue(homePage.isLoggedIn());
     }
-
-    @Test
-    public void canLogin() {
-        homePage.login(testUsername, testPassword);
-
-        assertTrue(homePage.isLoggedIn());
-    }
 }
