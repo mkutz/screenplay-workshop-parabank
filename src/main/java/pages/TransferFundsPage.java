@@ -25,14 +25,14 @@ public class TransferFundsPage extends Page {
 
     public void transfer(String amount, String fromAccountId, String toAccountId) {
         webDriver.findElement(amountInput).sendKeys(amount);
-        new Select(webDriver.findElement(fromAccountIdSelect)).selectByValue(fromAccountId);
+        if (null != fromAccountId) {
+            new Select(webDriver.findElement(fromAccountIdSelect)).selectByValue(fromAccountId);
+        }
         new Select(webDriver.findElement(toAccountIdSelect)).selectByValue(toAccountId);
         webDriver.findElement(transferButton).click();
     }
 
     public void transfer(String amount, String toAccountId) {
-        webDriver.findElement(amountInput).sendKeys(amount);
-        new Select(webDriver.findElement(toAccountIdSelect)).selectByValue(toAccountId);
-        webDriver.findElement(transferButton).click();
+        transfer(amount, null, toAccountId);
     }
 }
