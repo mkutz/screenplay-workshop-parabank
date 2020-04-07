@@ -1,4 +1,6 @@
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.AccountsOverviewPage;
 import pages.TransferFundsPage;
 
 public class TransferFundsTest extends BaseTest {
@@ -11,5 +13,9 @@ public class TransferFundsTest extends BaseTest {
         TransferFundsPage transferFundsPage = homePage.clickTransferFundsLink();
 
         transferFundsPage.transfer("10.22", newAccountId);
+
+        AccountsOverviewPage accountsOverviewPage = homePage.clickAccountsOverviewLink();
+
+        Assert.assertEquals(accountsOverviewPage.getAccount(newAccountId).getBalanceInCents(), 2500 + 1022);
     }
 }
