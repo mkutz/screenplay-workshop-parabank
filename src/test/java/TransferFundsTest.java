@@ -16,6 +16,6 @@ public class TransferFundsTest extends BaseTest {
 
         AccountsOverviewPage accountsOverviewPage = homePage.clickAccountsOverviewLink();
 
-        Assert.assertEquals(accountsOverviewPage.getAccount(newAccountId).getBalanceInCents(), 2500 + 1022);
+        Assert.assertEquals(accountsOverviewPage.getAccountBalanceInCents(newAccountId), 2500 + 1022);
     }
 }

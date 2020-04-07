@@ -1,6 +1,5 @@
 package pages;
 
-import facts.Account;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,19 +21,16 @@ public class AccountsOverviewPage extends Page {
 
     public List<String> getAccountIdsList() {
         return webDriver.findElements(accountRows).stream()
-                .map(accountRow -> accountRow.findElement(By.tagName("td:nth-child(1)")).getText())
+                .map(accountRow -> accountRow.findElement(By.cssSelector("td:nth-child(1)")).getText())
                 .collect(toList());
     }
 
-    public Account getAccount(String accountId) {
+    public int getAccountBalanceInCents(String accountId) {
         return webDriver.findElements(accountRows).stream()
-                .filter(accountRow -> accountId.equals(accountRow.findElement(By.cssSelector("td:nth-child(1)")).getText())).findAny()
-                .map(accountRow -> new Account(
-                        accountRow.findElement(By.cssSelector("td:nth-child(1)")).getText(),
-                        Integer.valueOf(accountRow.findElement(By.cssSelector("td:nth-child(2)"))
-                                .getText().replaceAll("[^\\d]", "")),
-                        Integer.valueOf(accountRow.findElement(By.cssSelector("td:nth-child(3)"))
-                                .getText().replaceAll("[^\\d]", ""))))
+                .filter(accountRow -> accountId.equals(accountRow.findElement(By.cssSelector("td:nth-child(1)")).getText()))
+                .findAny()
+                .map(accountRow -> accountRow.findElement(By.cssSelector("td:nth-child(2)")).getText())
+                .map(balanceText -> Integer.valueOf(balanceText.replaceAll("[^\\d]", "")))
                 .get();
     }
 }
