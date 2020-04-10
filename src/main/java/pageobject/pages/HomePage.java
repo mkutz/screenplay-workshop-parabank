@@ -22,10 +22,6 @@ public class HomePage extends Page {
     }
 
 
-    public boolean isAt() {
-        return webDriver.getTitle().equals("ParaBank | Welcome | Online Banking");
-    }
-
     public void login(String username, String password) {
         webDriver.findElement(usernameInput).sendKeys(username);
         webDriver.findElement(passwordInput).sendKeys(password);

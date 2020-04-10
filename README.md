@@ -88,15 +88,51 @@ As you can see, all existing tests extend [BaseTest] which does the basic common
 
 OK, so instead of the [HomePage] or the WebDriver, we will use an Actor instance to interact with the application. So let's create that class.
 
-...
+Just like in the [BaseTest], we want to make sure our WebDriver is setup before and teared down after all tests have been executed, so we can copy these to methods over. We also like delete all cookies and have the driver set the main page before each test, so we can copy the `reset` method as well.
+
+Instead of the [HomePage], let's create a new class [Actor] and create an instance as a field of our [BaseScreenplay]. As the name of the field, we should use the __role__ the actor will play. In our case that role will be a simple user, so let's name the field `user`.
+
+For logging purposes, let's give the actor a name and override the `toString` method to return it.
+
+In order to be able to interact with our application, the [Actor] need abilities, so let's create a Set of abilities as a field of our [Actor]. [Ability] should be an interface to allow to create different abilities for the actor.
+
+To add abilities to the [Actor], we  create a method `can`, which will return `this`, so we can setup an [Actor] instance in only one line.
+
+To access abilities, we create a method `getAbiliy` which will return the instance of the requested [Ability] class or throw a [MissingAbilityExcption], which should tell us in its message who was not able to do what. So let's create that.
+
+Let's implement that interface and create the [BrowseTheWeb] ability, which should own a WebDriver.
+
+Now let's instantiate the [BrowseTheWeb] in our [BaseScreenplay] and add it to the [Actor]'s abilities using the `can` method.
+
+Reading the setup line now is still a bit strange due to the `new` keyword. We can get rid of that by using a static method to initialize [BrowseTheWeb]. Let's call it `browseTheWebWith`, so make the line almost plain English.
+
+OK, so now we are setup to create a [LoginScreenplay]. In order to do that, we need the [Actor] to be able to perform __tasks__, in this case a login. So let's create another method `perform` in our [Actor] class which takes an instance of the [Task] interface.
+
+A [Task] can be performed by an [Actor], so we will declare a method `perform`, which takes an [Actor] instance.
+
+Next we will implement the [LoginTask]. Obviously a login requires a username and a password, so we add those as fields and implement the `performAs` method.
+
+As the login will happen using a WebDriver, we first need to use the [Actor]'s `getAbility` method to get the [BrowseTheWeb] ability and then get the WebDriver instance. This may appear complicated, but allows us to combine different [Ability] instances to perform complex tasks.
+
+The actual login code can be copied from the [HomePage] class' `login` method.
+
+OK, let's execute the test to see if our task is being performed as expected.
+
+As you can see the browser opens and the login is performed just like in [LoginTest].
+
+But we are still missing an essential part of a test: the verification. This we will address in the next part.
+
+Also we still rely on the `reset` method in [BaseScreenplay]. As an extra homework for you, you can try to create another instance of [Task], which does that `reset`. Then perform that task in `setupActor`.
 
 ### Part 3: Questions and Facts
 
-The abilities can be used to _perform_ __tasks__ like register, login, open a new account or to answer __questions__ like "Are you logged in?" or "What's you main account's balance?".
+To finish our first screenplay, we need to answer the __question__ if the user is logged in now.
 
-An actor can also _know_ __facts__ like their full name, credentials, address or social security number.
+So let's create another method in our [Actor] `seesThat` which takes an instance of the new [Question] interface. Similar to a [Task] being performed by an [Actor], a [Question] must be answered by one. So we create a method `answeredBy` taking an [Actor] as argument.
 
-Actors can also _learn_ new facts as they perform tasks. For example, they can memorize the account ID of a new account as they open it.
+Unlike a [Task] a Question should return us an answer. In case of our first Question "is the user logged in?", that answer is either yes or no. So the type of the answer is `Boolean`, but there will be Questions with other types of answers, so let's use Java generics to make the return type of `answeredBy` whatever the question requires.
+
+To implement our first [Question] "[IsLoggedIn]", we again need to use the actor's [BrowseTheWebAbility] and extract the WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
 
 ...
 
@@ -150,3 +186,12 @@ Actors can also _learn_ new facts as they perform tasks. For example, they can m
 [LoginTest]: <src/test/java/pageobjects/LoginTest.java>
 [TransferFundsTest]: <src/test/java/pageobjects/TransferFundsTest.java>
 [HomePage]: <src/main/java/pageobject/pages/HomePage.java>
+[Actor]: <src/main/java/screenplay/actor/Actor.java>
+[BaseScreenplay]: <src/test/java/screenplay/BaseScreenplay.java>
+[Ability]: <src/main/java/screenplay/actor/abilities/Ability.java>
+[BrowseTheWeb]: <src/main/java/screenplay/actor/abilities/BrowseTheWeb.java>
+[LoginScreenplay]: <src/test/java/screenplay/LoginScreenplay.java>
+[Task]: <src/main/java/screenplay/actor/tasks/Task.java>
+[LoginTask]: <src/main/java/screenplay/actor/tasks/Login.java>
+[Question]: <src/main/java/screenplay/actor/questions/Question.java>
+[IsLoggedIn]: <src/main/java/screenplay/actor/questions/LoggedIn.java>

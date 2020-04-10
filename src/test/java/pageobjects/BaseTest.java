@@ -8,15 +8,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import pageobject.pages.HomePage;
 
-import static org.testng.Assert.assertTrue;
-
 abstract public class BaseTest {
 
-    WebDriver webDriver;
-    String baseUrl = "http://parabank.parasoft.com/";
-    HomePage homePage;
-    String testUsername = "screenplayer";
-    String testPassword = "Sup3rS3cr3t!";
+    private WebDriver webDriver;
+    protected HomePage homePage;
+    protected String testUsername = "screenplayer";
+    protected String testPassword = "Sup3rS3cr3t!";
 
     @BeforeClass
     public void setUpWebDriver() {
@@ -25,11 +22,15 @@ abstract public class BaseTest {
     }
 
     @BeforeMethod
-    public void goHome() {
+    public void reset() {
         webDriver.manage().deleteAllCookies();
-        webDriver.get(baseUrl);
+        webDriver.get("http://parabank.parasoft.com/");
         homePage = new HomePage(webDriver);
-        assertTrue(homePage.isAt());
+    }
+
+    @BeforeMethod
+    public void createHomePage() {
+        homePage = new HomePage(webDriver);
     }
 
     @AfterClass
