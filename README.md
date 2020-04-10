@@ -82,7 +82,7 @@ The Actor can _have_ __abilities__. For example browsing the web, using an app, 
 
 So let's start creating some screenplays using these concepts.
 
-First I will create a new package `screenplay` next to the existing `pageobjects` package, so we can develop our screenplays in parallel and compare the code.
+First I will create a new package `screenplay` next to the existing `pageobject` package, so we can develop our screenplays in parallel and compare the code.
 
 As you can see, all existing tests extend [BaseTest] which does the basic common setup, so let's create a [BaseScreenplay] first to do the same.
 
