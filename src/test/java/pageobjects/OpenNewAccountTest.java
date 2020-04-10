@@ -1,7 +1,9 @@
+package pageobjects;
+
 import org.testng.annotations.Test;
-import pages.AccountOpenedPage;
-import pages.AccountsOverviewPage;
-import pages.OpenNewAccountPage;
+import pageobject.pages.AccountOpenedPage;
+import pageobject.pages.AccountsOverviewPage;
+import pageobject.pages.OpenNewAccountPage;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;

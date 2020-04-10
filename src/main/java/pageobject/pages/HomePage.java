@@ -1,20 +1,20 @@
-package pages;
+package pageobject.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class HomePage extends Page {
 
-    private static By usernameInput = By.name("username");
-    private static By passwordInput = By.name("password");
-    private static By submitButton = By.cssSelector(".login input.button");
+    private static final By usernameInput = By.name("username");
+    private static final By passwordInput = By.name("password");
+    private static final By submitButton = By.cssSelector(".login input.button");
 
-    private static By registerLink = By.linkText("Register");
+    private static final By registerLink = By.linkText("Register");
 
-    private static By openNewAccountLink = By.linkText("Open New Account");
-    private static By accountsOverviewLink = By.linkText("Accounts Overview");
-    private static By transferFundsLink = By.linkText("Transfer Funds");
-    private static By logoutLink = By.linkText("Log Out");
+    private static final By openNewAccountLink = By.linkText("Open New Account");
+    private static final By accountsOverviewLink = By.linkText("Accounts Overview");
+    private static final By transferFundsLink = By.linkText("Transfer Funds");
+    private static final By logoutLink = By.linkText("Log Out");
 
 
     public HomePage(WebDriver webDriver) {

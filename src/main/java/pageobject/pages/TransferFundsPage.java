@@ -1,4 +1,4 @@
-package pages;
+package pageobject.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -23,16 +23,12 @@ public class TransferFundsPage extends Page {
     }
 
 
-    public void transfer(String amount, String fromAccountId, String toAccountId) {
-        webDriver.findElement(amountInput).sendKeys(amount);
+    public void transfer(int amountInCents, String fromAccountId, String toAccountId) {
+        webDriver.findElement(amountInput).sendKeys(Integer.toString(amountInCents / 100));
         if (null != fromAccountId) {
             new Select(webDriver.findElement(fromAccountIdSelect)).selectByValue(fromAccountId);
         }
         new Select(webDriver.findElement(toAccountIdSelect)).selectByValue(toAccountId);
         webDriver.findElement(transferButton).click();
-    }
-
-    public void transfer(String amount, String toAccountId) {
-        transfer(amount, null, toAccountId);
     }
 }

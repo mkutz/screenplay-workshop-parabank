@@ -1,4 +1,4 @@
-package pages;
+package pageobject.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -9,7 +9,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClick
 
 public class AccountOpenedPage extends Page {
 
-    private static By newAccountLink = By.id("newAccountId");
+    private static final By newAccountLink = By.id("newAccountId");
 
 
     public AccountOpenedPage(WebDriver webDriver) {

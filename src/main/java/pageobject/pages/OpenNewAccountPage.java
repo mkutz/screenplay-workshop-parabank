@@ -1,4 +1,4 @@
-package pages;
+package pageobject.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,9 +10,9 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 
 public class OpenNewAccountPage extends Page {
 
-    private static By accountTypeSelect = By.id("type");
-    private static By fromAccountIdSelect = By.id("fromAccountId");
-    private static By openNewAccountButton = By.cssSelector("input.button");
+    private static final By accountTypeSelect = By.id("type");
+    private static final By fromAccountIdSelect = By.id("fromAccountId");
+    private static final By openNewAccountButton = By.cssSelector("input.button");
 
 
     public OpenNewAccountPage(WebDriver webDriver) {
