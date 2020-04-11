@@ -28,10 +28,6 @@ public class HomePage extends Page {
         webDriver.findElement(submitButton).click();
     }
 
-    public void logout() {
-        webDriver.findElement(logoutLink).click();
-    }
-
     public boolean isLoggedIn() {
         return webDriver.findElement(logoutLink).isDisplayed();
     }
