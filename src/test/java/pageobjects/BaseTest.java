@@ -25,11 +25,10 @@ abstract public class BaseTest {
     public void reset() {
         webDriver.manage().deleteAllCookies();
         webDriver.get("http://parabank.parasoft.com/");
-        homePage = new HomePage(webDriver);
     }
 
     @BeforeMethod
-    public void createHomePage() {
+    public void setUpHomePage() {
         homePage = new HomePage(webDriver);
     }
 
