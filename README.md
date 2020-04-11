@@ -138,7 +138,7 @@ So let's create another method in our [Actor] `seesThat` which takes an instance
 
 Unlike a [Task] a Question should return us an answer. In case of our first Question "is the user logged in?", that answer is either yes or no. So the type of the answer is `Boolean`, but there will be Questions with other types of answers, so let's use Java generics to make the return type of `answeredBy` whatever the question requires.
 
-To implement our first [Question] "[IsLoggedIn]", we again need to use the actor's [BrowseTheWeb] and extract the WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
+To implement our first [Question] "[LoggedIn]", we again need to use the actor's [BrowseTheWeb] ability and extract the WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
 
 Again, we need to inline the locators, and we also generate `equals`, `hashCode` and `toString`.
 
@@ -216,5 +216,5 @@ Again, we need to inline the locators, and we also generate `equals`, `hashCode`
 [Task]: <src/main/java/screenplay/actor/tasks/Task.java>
 [LoginTask]: <src/main/java/screenplay/actor/tasks/Login.java>
 [Question]: <src/main/java/screenplay/actor/questions/Question.java>
-[IsLoggedIn]: <src/main/java/screenplay/actor/questions/LoggedIn.java>
+[LoggedIn]: <src/main/java/screenplay/actor/questions/LoggedIn.java>
 [MissingAbilityException]: <src/main/java/screenplay/actor/MissingAbilityException.java>
