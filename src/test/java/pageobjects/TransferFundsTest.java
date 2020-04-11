@@ -29,7 +29,7 @@ public class TransferFundsTest extends BaseTest {
         homePage.clickAccountsOverviewLink();
         assertEquals(accountsOverviewPage.getAccountBalanceInCents(newAccountId),
                 originalToBalance + transferAmountInCents);
-        assertEquals(accountsOverviewPage.getAccountBalanceInCents(),
+        assertEquals(accountsOverviewPage.getMainAccountBalanceInCents(),
                 originalFromBalance - transferAmountInCents);
     }
 }
