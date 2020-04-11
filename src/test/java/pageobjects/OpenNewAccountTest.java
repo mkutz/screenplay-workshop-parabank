@@ -1,5 +1,6 @@
 package pageobjects;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageobject.pages.AccountOpenedPage;
 import pageobject.pages.AccountsOverviewPage;
@@ -10,10 +11,13 @@ import static org.testng.Assert.assertTrue;
 
 public class OpenNewAccountTest extends BaseTest {
 
+    @BeforeMethod
+    public void login() {
+        homePage.login(testUsername, testPassword);
+    }
+
     @Test
     public void canOpenNewAccount() {
-        homePage.login(testUsername, testPassword);
-
         OpenNewAccountPage openNewAccountPage = homePage.clickOpenNewAccountLink();
         AccountOpenedPage accountOpenedPage = openNewAccountPage.openAccount();
 
