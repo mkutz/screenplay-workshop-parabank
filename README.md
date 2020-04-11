@@ -28,24 +28,26 @@ You can find the link to the GitHub repository below this video, so you can chec
 
 The Page Object pattern is an effective and well-supported way to organize test code.
 
-A page object contains locators for page elements we want to interact with, so it abstracts from the page structure.
+A page object like [RegisterPage] contains locators for page elements we want to interact with, so it abstracts from the page structure.
 
-In may also contain methods to abstract complex operations, like filling a form.
+It also contains methods to abstract complex operations, like filling the full address into the form in only one step.
 
-Additionally, we can hide away waiting code to prevent interacting with elements, that are not yet ready for interaction
+We can also hide waiting code, to prevent interacting with elements, that are not yet ready for it, like in the [AccountsOverviewPage]'s constructor.
 
-Page objects' methods are typically limited to simple *interactions* on a single page.
+Or we can put in methods to extract information for easier assertions, like `getAccountIdsList`, which extracts all account IDs from the table or `getAccountBalanceInCents`, which gets the balance of a single account as an integer of cents.
 
-This is perfectly OK for simple tests, like a [LoginTest].
+However, page objects' methods are typically limited to simple _interactions_ on a single page.
+
+This is perfectly OK for simple tests, like a [LoginTest], which is in fact limited to the home page only.
 
 In more complex scenarios, we end up with a lot of fine-grained steps, and it can become hard to gasp what the test's purpose is. An example in this test suite would be the [TransferFundsTest].
 
-The manual test case for this feature, it would be:
+The manual test case for this feature, it would be something like:
 
 > Given that the user has opened a new account\
 > When they transfer $10 form the main account to the new account\
-> Then the new account's balance is increased by that amount\
-> And the main account's balance is decreased by that amount.
+> Then the new account's balance increased by that amount\
+> And the main account's balance decreased by that amount.
 
 Let's read the code:
 
@@ -60,15 +62,15 @@ Let's read the code:
 > And sees that the new account's balance increased by the transfer amount
 > And the main account's balance decreased by the transfer amount.
 
-Quite a lot of boring code!
+Quite a lot of boring code that makes it hard to see what the test is actually about.
 
 In the manual test case, we can simply rely on the tester to memorize or note down all the facts that we need in the then-part of the test. For example, the main account ID could be noted down right after registration.
 
-Of course, we could store these facts in constants –just like the username and password– but that will cause frequent updates to the tests every time somebody clears the test database. 
+Of course, we could store these facts in constants –just like the username and password– but that will cause frequent updates to the tests every time somebody clears the test database.
 
-The underlying problem with page objects is that they are stateless. Just like the pageobject.pages, that they represent.
+The underlying problem with page objects is that they are stateless. Just like the pages, that they represent.
 
-We have no simple way of noting things down, but right there in the test causing all that noise.
+We have no simple way of noting things down, but saving it in local variables right there in the test.
 
 In modern web applications state is stored mainly on the users' side via cookies, that refer to session data.
 
@@ -80,51 +82,55 @@ The central object in a screenplay is an __actor__.
 
 The Actor can _have_ __abilities__. For example browsing the web, using an app, gather information via an API, read their email and so on.
 
-So let's start creating some screenplays using these concepts.
+These abilities enable the actor to _perform_ __tasks__, like login, transfer funds or open a new account.
+
+So let's start creating some screenplays using these three concepts.
 
 First I will create a new package `screenplay` next to the existing `pageobject` package, so we can develop our screenplays in parallel and compare the code.
 
 As you can see, all existing tests extend [BaseTest] which does the basic common setup, so let's create a [BaseScreenplay] first to do the same.
 
-OK, so instead of the [HomePage] or the WebDriver, we will use an Actor instance to interact with the application. So let's create that class.
+OK, so instead of the [HomePage], we will use an [Actor] instance to interact with the application. So let's create that class.
 
-Just like in the [BaseTest], we want to make sure our WebDriver is setup before and teared down after all tests have been executed, so we can copy these to methods over. We also like delete all cookies and have the driver set the main page before each test, so we can copy the `reset` method as well.
+Just like in the [BaseTest], we want to make sure our WebDriver is set up before, and teared down after all tests have been executed, so we can copy these to methods over.
+
+We also like delete all cookies and have the driver set the main page before each test, so we can copy the `reset` method as well.
 
 Instead of the [HomePage], let's create a new class [Actor] and create an instance as a field of our [BaseScreenplay]. As the name of the field, we should use the __role__ the actor will play. In our case that role will be a simple user, so let's name the field `user`.
 
 For logging purposes, let's give the actor a name and override the `toString` method to return it.
 
-In order to be able to interact with our application, the [Actor] need abilities, so let's create a Set of abilities as a field of our [Actor]. [Ability] should be an interface to allow to create different abilities for the actor.
+In order to be able to interact with our application, the [Actor] need abilities, so let's create a Set of abilities as a field of our [Actor]. [Ability] should be an interface to allow creating different abilities for the actor.
 
-To add abilities to the [Actor], we  create a method `can`, which will return `this`, so we can setup an [Actor] instance in only one line.
+To add abilities to the [Actor], we  create a method `can`, which will return `this`, so we chain methods like this and set up and assign an [Actor] instance in only one line.
 
-To access abilities, we create a method `getAbiliy` which will return the instance of the requested [Ability] class or throw a [MissingAbilityExcption], which should tell us in its message who was not able to do what. So let's create that.
+To access abilities, we create a method `getAbiliy` which will return the instance of the requested [Ability] class or throw a [MissingAbilityException], which should tell us in its message who was not able to do what. So let's create that.
 
-Let's implement that interface and create the [BrowseTheWeb] ability, which should own a WebDriver.
+Let's implement that interface and create the [BrowseTheWeb] ability, which simply wraps a WebDriver instance and provides a getter for it.
+
+Since we are storing abilities in a HashSet, we should also override `equals` and `hashCode` and for logging purposes, we also override `toString`. So let's rely on our IDE to generate those.
 
 Now let's instantiate the [BrowseTheWeb] in our [BaseScreenplay] and add it to the [Actor]'s abilities using the `can` method.
 
-Reading the setup line now is still a bit strange due to the `new` keyword. We can get rid of that by using a static method to initialize [BrowseTheWeb]. Let's call it `browseTheWebWith`, so make the line almost plain English.
+Reading the setup line now is still a bit strange due to the `new` keyword. We can get rid of that by using a static method to initialize [BrowseTheWeb]. Let's call it `browseTheWebWith`, to make the line almost plain English.
 
 OK, so now we are setup to create a [LoginScreenplay]. In order to do that, we need the [Actor] to be able to perform __tasks__, in this case a login. So let's create another method `perform` in our [Actor] class which takes an instance of the [Task] interface.
 
-A [Task] can be performed by an [Actor], so we will declare a method `perform`, which takes an [Actor] instance.
+A [Task] can be performed by an [Actor], so we will declare a method `performAs`, which takes an [Actor] instance.
 
 Next we will implement the [LoginTask]. Obviously a login requires a username and a password, so we add those as fields and implement the `performAs` method.
 
-As the login will happen using a WebDriver, we first need to use the [Actor]'s `getAbility` method to get the [BrowseTheWeb] ability and then get the WebDriver instance. This may appear complicated, but allows us to combine different [Ability] instances to perform complex tasks.
+As the login will happen using a WebDriver, we first need to use the [Actor]'s `getAbility` method to get the [BrowseTheWeb] ability and use its WebDriver instance. This may appear complicated, but allows us to combine different [Ability] instances to perform complex tasks.
 
-The actual login code can be copied from the [HomePage] class' `login` method.
+The actual login code can be copied from the [HomePage] class' `login` method. We only need to inline the locators.
 
-OK, let's execute the test to see if our task is being performed as expected.
+OK, let's execute the test to see if our task is performed as expected.
 
-As you can see the browser opens and the login is performed just like in [LoginTest].
+As you can see the browser opens, and the login is happening just like in [LoginTest].
 
-But we are still missing an essential part of a test: the verification. This we will address in the next part.
+We are still missing an essential part of a test: the verification. This we will address in the next part.
 
-Also we still rely on the `reset` method in [BaseScreenplay]. As an extra homework for you, you can try to create another instance of [Task], which does that `reset`. Then perform that task in `setupActor`.
-
-### Part 3: Questions and Facts
+### Part 3: Questions and known Facts
 
 To finish our first screenplay, we need to answer the __question__ if the user is logged in now.
 
@@ -134,7 +140,13 @@ Unlike a [Task] a Question should return us an answer. In case of our first Ques
 
 To implement our first [Question] "[IsLoggedIn]", we again need to use the actor's [BrowseTheWebAbility] and extract the WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
 
-...
+Again, we need to inline the locators, and we also generate `euquls`, `hashCode` and `toString`.
+
+…
+
+### Part 4: Learning Facts by performing Tasks
+
+…
 
 ## TODO
 
@@ -142,6 +154,15 @@ To implement our first [Question] "[IsLoggedIn]", we again need to use the actor
 - [X] Read [4 Top Automation Testing Design Patterns]
 - [X] Listen [Test Guild Podcast]
 - [X] Read [Page Objects Refactored]
+- [ ] Add questions of part 1
+- [ ] Add questions of part 2
+- [ ] Finish part 3:
+  - Introduce Credentials as first known Fact
+  - Implement RegisterScreenplay to demonstrate more known Facts
+- [ ] Add questions of part 3
+- [ ] Write part 4:
+  - Implement OpenNewAccountScreenplay and learn the new account's ID
+  - Implement TransferFundsScreenplay
 
 ## Notes
 
@@ -181,7 +202,8 @@ To implement our first [Question] "[IsLoggedIn]", we again need to use the actor
 [John Ferguson Smart]: <https://twitter.com/wakaleo>
 [Page Objects Refactored]: <https://ideas.riverglide.com/page-objects-refactored-12ec3541990#.ekkiguobe>
 
-
+[RegisterPage]: <src/main/java/pageobject/pages/RegisterPage.java>
+[AccountsOverviewPage]: <src/main/java/pageobject/pages/AccountsOverviewPage.java>
 [BaseTest]: <src/test/java/pageobjects/BaseTest.java>
 [LoginTest]: <src/test/java/pageobjects/LoginTest.java>
 [TransferFundsTest]: <src/test/java/pageobjects/TransferFundsTest.java>
@@ -195,3 +217,4 @@ To implement our first [Question] "[IsLoggedIn]", we again need to use the actor
 [LoginTask]: <src/main/java/screenplay/actor/tasks/Login.java>
 [Question]: <src/main/java/screenplay/actor/questions/Question.java>
 [IsLoggedIn]: <src/main/java/screenplay/actor/questions/LoggedIn.java>
+[MissingAbilityException]: <src/main/java/screenplay/actor/MissingAbilityException.java>
