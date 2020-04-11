@@ -34,10 +34,10 @@ public class AccountsOverviewPage extends Page {
                 .findAny()
                 .map(accountRow -> accountRow.findElement(balanceCell).getText())
                 .map(AccountsOverviewPage::dollarStringToCents)
-                .get();
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Account %s not in account overview", accountId)));
     }
 
-    public int getAccountBalanceInCents() {
+    public int getMainAccountBalanceInCents() {
         String balanceText = webDriver.findElement(mainAccountRow)
                 .findElement(By.cssSelector("td:nth-child(2)"))
                 .getText();
