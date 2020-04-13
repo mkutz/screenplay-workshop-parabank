@@ -6,8 +6,8 @@ import pageobject.pages.AccountOpenedPage;
 import pageobject.pages.AccountsOverviewPage;
 import pageobject.pages.OpenNewAccountPage;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 public class OpenNewAccountTest extends BaseTest {
 
@@ -26,6 +26,6 @@ public class OpenNewAccountTest extends BaseTest {
 
         AccountsOverviewPage accountsOverviewPage = homePage.clickAccountsOverviewLink();
 
-        assertTrue(accountsOverviewPage.getAccountIdsList().contains(newAccountId));
+        assertEquals(accountsOverviewPage.getAccountBalanceInCents(newAccountId), 10000);
     }
 }
