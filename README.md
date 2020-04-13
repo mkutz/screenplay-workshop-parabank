@@ -30,11 +30,11 @@ Welcome back to part 1.
 
 The Page Object pattern is an effective and well-supported way to organize test code.
 
-A page object like [RegisterPage] contains locators for page elements we want to interact with, so it abstracts from the page structure.
+A page object –like [RegisterPage]– contains locators for page elements we want to interact with, so it abstracts from the page structure.
 
 It also contains methods to abstract complex operations, like filling the full address into the form in only one step.
 
-We can also hide waiting code, to prevent interacting with elements, that are not yet ready for it, like in the [AccountsOverviewPage]'s constructor.
+In the [AccountsOverviewPage]'s constructor you can also find some waiting code, to prevent interacting with the page before it is ready.
 
 Or we can put in methods to extract information for easier assertions, like `getAccountIdsList`, which extracts all account IDs from the table or `getAccountBalanceInCents`, which gets the balance of a single account as an integer of cents.
 
