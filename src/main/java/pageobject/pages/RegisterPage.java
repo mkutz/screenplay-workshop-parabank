@@ -3,7 +3,7 @@ package pageobject.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class RegisterPage extends HomePage {
+public class RegisterPage extends Page {
 
     private final By firstNameInput = By.id("customer.firstName");
     private final By lastNameInput = By.id("customer.lastName");
