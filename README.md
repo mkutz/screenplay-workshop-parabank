@@ -10,7 +10,7 @@ Hello and welcome to this course about the screenplay design pattern.
 
 My name is Michael Kutz, and I'll be your instructor.
 
-In this course we will look at an existing test suite written in Java™ using the Page Object pattern.
+In this course we will look at an existing test suite written in Java using the Page Object pattern.
  
 We will analyse what the shortcomings of that well-known pattern are and how screenplay can help us there.
 
@@ -118,7 +118,7 @@ OK, so now we are setup to create a [LoginScreenplay]. In order to do that, we n
 
 A [Task] can be performed by an [Actor], so we will declare a method `performAs`, which takes an [Actor] instance.
 
-Next we will implement the [LoginTask]. Obviously a login requires a username and a password, so we add those as fields and implement the `performAs` method.
+Next we will implement the [Login]. Obviously a login requires a username and a password, so we add those as fields and implement the `performAs` method.
 
 As the login will happen using a WebDriver, we first need to use the [Actor]'s `getAbility` method to get the [BrowseTheWeb] ability and use its WebDriver instance. This may appear complicated, but allows us to combine different [Ability] instances to perform complex tasks.
 
@@ -130,7 +130,7 @@ As you can see the browser opens, and the login is happening just like in [Login
 
 We are still missing an essential part of a test: the verification. This we will address in the next part.
 
-### Part 3: Questions and known Facts
+### Part 3: Asking Questions
 
 To finish our first screenplay, we need to answer the __question__ if the user is logged in now.
 
@@ -142,11 +142,81 @@ To implement our first [Question] "[LoggedIn]", we again need to use the actor's
 
 Again, we need to inline the locators, and we also generate `equals`, `hashCode` and `toString`.
 
-…
+To make the code more readable, we will again add a static method to create an instance of [LoggedIn], named `loggedIn`. Now let's use the method within `seesThat` in `assertThat` to verify the effect in our test.
 
-### Part 4: Learning Facts by performing Tasks
+Now let's run our screenplay, which is finally equivalent to the original [LoginTest].
 
-…
+As a homework task, have a look at [RegisterTest] and try to create an equivalent [RegisterScreenplay].
+
+### Part 4: Knowing Facts
+
+Welcome back to part 4.
+
+I hope you were able to create [RegisterScreenplay].
+
+Let's have a look into my version of it. As you can see the new [Register] task requires a lot of test data, that are still right there in the screenplay's code. 
+
+In a manual test case, we'd refer to a fixed set of test data, which is used in any test case that needs something like a valid social security number or an address.
+
+Our testers would probably know them by heart after a few iterations.
+
+Why don't we make our [Actor] know things by heart as well?
+
+So let's create a new method `knows`, which takes an instance of the new [Fact] interface and stores it in another Set named `facts`. To use facts, we can basically copy the `getAbility` method and adjust it to get `Fact`s and to throw a [MissingFactException] with a reasonable message if a fact in unknown to the actor.
+
+As we will mainly use the `knows` method in our [BaseScreenplay]'s `setupActor` method –just like `can`–, we should also return the actor instance.
+
+Now we can create some facts. Let's start with the actor's [Credentials] as they are used in both existing screenplays.
+
+So we implement the [Fact] interface and add one String field for the user name and one for the password plus the corresponding getter methods. We also add the usual static method to create an instance of [Credentials].
+
+After the actor knows their credentials, now we can remove the username and password fields from the [Login] task. Instead, we can now call `getFact` on the performing actor instance to get the required facts.
+
+Let's run [LoginScreenplay] again to check, if it still works the way it should.
+
+Let's improve this a bit further by putting our magically working user name and password into a new static method `defaultCredentials`, which does not take any parameters.
+
+These default test data methods make using [Fact]s very convenient. It reduces the risk of fact duplications among our tests, since we can get the magic default values from anywhere, and if they change for some reason, we can also update them in exactly one place.
+
+As another homework exercise, try to use [Fact]s in your [RegisterScreenplay].
+
+### Part 5: Learning Facts by performing Tasks
+
+Welcome back to part 5.
+
+Let's have a short look into the revised [RegisterScreenplay].
+
+I added a lot of more implementations of the Fact interface:
+- [FullName],
+- [Address],
+- [PhoneNumber],
+- [Ssn]
+
+I also added a new static method to [Credentials], which generates a random username, so we don't fail the test due to an already taken username.
+
+So facts do not only provide use with a way to store static default test data, but can also be used to hold logic to generate dynamic test data!
+
+Now let's have a look at [OpenNewAccountTest].
+
+As you can see, the test is using three pages: [OpenNewAccountPage] is used to actually open the new account, but then the [AccountsOverviewPage] is needed to verify that the account using the new account ID from the [AccountOpenedPage].
+
+So let's create our [OpenNewAccountScreenplay], in which we will first need perform [OpenNewAccount] task.
+
+Most of the code can be copied from [OpenNewAccountPage] and [AccountOpenedPage]. Note that this includes the waiting code from the constructors, which is needed since the pages are not intractable immediately.
+
+Let's check if our new task works as expected.
+
+So we created a new account, now we need to verify it on the [AccountsOverviewPage] and in order to do that, we need the new account's ID, which was displayed on the [AccountOpenedPage].
+
+Since [Task]s' `performAs` method does not return anything, we cannot just record it in a local variable as in [OpenNewAccountTest].
+
+Well after all, the new account's ID is simply a new fact. One that was not known before the test started, but a fact after all. So why don't we just use the `knows` method of our [Actor] to _learn_ the new fact, while we perform a task.
+
+Let's add an assertion to make sure the actor has learned the ID after performing the task.
+
+Now we can add the new [AccountBalance] question to verify the initial balance of our account.
+
+
 
 ## TODO
 
@@ -156,13 +226,14 @@ Again, we need to inline the locators, and we also generate `equals`, `hashCode`
 - [X] Read [Page Objects Refactored]
 - [ ] Add questions of part 1
 - [ ] Add questions of part 2
-- [ ] Finish part 3:
-  - Introduce Credentials as first known Fact
-  - Implement RegisterScreenplay to demonstrate more known Facts
+- [X] Write part 3:
+  - Introduce Questions
+  - Implment LoggedIn as first question
 - [ ] Add questions of part 3
-- [ ] Write part 4:
+- [X] Write part 4:
+  - Introduce Credentials as first known Fact
+- [ ] Write part 5:
   - Implement OpenNewAccountScreenplay and learn the new account's ID
-  - Implement TransferFundsScreenplay
 
 ## Notes
 
@@ -204,17 +275,32 @@ Again, we need to inline the locators, and we also generate `equals`, `hashCode`
 
 [RegisterPage]: <src/main/java/pageobject/pages/RegisterPage.java>
 [AccountsOverviewPage]: <src/main/java/pageobject/pages/AccountsOverviewPage.java>
+[AccountOpenedPage]: <src/main/java/pageobject/pages/AccountOpenedPage.java>
+[OpenNewAccountPage]: <src/main/java/pageobject/pages/OpenNewAccountPage.java>
 [BaseTest]: <src/test/java/pageobjects/BaseTest.java>
 [LoginTest]: <src/test/java/pageobjects/LoginTest.java>
 [TransferFundsTest]: <src/test/java/pageobjects/TransferFundsTest.java>
 [HomePage]: <src/main/java/pageobject/pages/HomePage.java>
-[Actor]: <src/main/java/screenplay/actor/Actor.java>
+[Actor]: <src/main/java/screenplay/Actor.java>
 [BaseScreenplay]: <src/test/java/screenplay/BaseScreenplay.java>
-[Ability]: <src/main/java/screenplay/actor/abilities/Ability.java>
-[BrowseTheWeb]: <src/main/java/screenplay/actor/abilities/BrowseTheWeb.java>
+[Ability]: <src/main/java/screenplay/abilities/Ability.java>
+[BrowseTheWeb]: <src/main/java/screenplay/abilities/BrowseTheWeb.java>
 [LoginScreenplay]: <src/test/java/screenplay/LoginScreenplay.java>
-[Task]: <src/main/java/screenplay/actor/tasks/Task.java>
-[LoginTask]: <src/main/java/screenplay/actor/tasks/Login.java>
-[Question]: <src/main/java/screenplay/actor/questions/Question.java>
-[LoggedIn]: <src/main/java/screenplay/actor/questions/LoggedIn.java>
-[MissingAbilityException]: <src/main/java/screenplay/actor/MissingAbilityException.java>
+[Task]: <src/main/java/screenplay/tasks/Task.java>
+[Login]: <src/main/java/screenplay/tasks/Login.java>
+[Question]: <src/main/java/screenplay/questions/Question.java>
+[LoggedIn]: <src/main/java/screenplay/questions/LoggedIn.java>
+[MissingAbilityException]: <src/main/java/screenplay/MissingAbilityException.java>
+[RegisterTest]: <src/test/java/pageobjects/RegisterTest.java>
+[RegisterScreenplay]: <src/test/java/screenplay/RegisterScreenplay.java>
+[Fact]: <src/main/java/screenplay/facts/Fact.java>
+[MissingFactException]: <src/main/java/screenplay/MissingFactException.java>
+[Credentials]: <src/main/java/screenplay/facts/Credentials.java>
+[FullName]: <src/main/java/screenplay/facts/FullName.java>
+[Address]: <src/main/java/screenplay/facts/Address.java>
+[Ssn]: <src/main/java/screenplay/facts/Ssn.java>
+[PhoneNumber]: <src/main/java/screenplay/facts/PhoneNumber.java>
+[OpenNewAccountTest]: <src/test/java/pageobjects/OpenNewAccountTest.java>
+[OpenNewAccount]: <src/main/java/screenplay/tasks/OpenNewAccount.java>
+[OpenNewAccountScreenplay]: <src/test/java/screenplay/OpenNewAccountScreenplay.java>
+[AccountBalance]: <src/main/java/screenplay/questions/AccountBalance.java>
