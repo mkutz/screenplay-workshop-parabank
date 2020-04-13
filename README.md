@@ -26,6 +26,8 @@ You can find the link to the GitHub repository below this video, so you can chec
 
 ### Part 1: Page Object VS Screenplay Pattern
 
+Welcome back to part 1.
+
 The Page Object pattern is an effective and well-supported way to organize test code.
 
 A page object like [RegisterPage] contains locators for page elements we want to interact with, so it abstracts from the page structure.
