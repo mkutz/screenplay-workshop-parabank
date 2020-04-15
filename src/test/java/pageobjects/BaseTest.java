@@ -12,8 +12,8 @@ abstract public class BaseTest {
 
     private WebDriver webDriver;
     protected HomePage homePage;
-    protected String testUsername = "screenplayer";
-    protected String testPassword = "Sup3rS3cr3t!";
+    protected String testUsername = "john";
+    protected String testPassword = "demo";
 
     @BeforeClass
     public void setUpWebDriver() {
