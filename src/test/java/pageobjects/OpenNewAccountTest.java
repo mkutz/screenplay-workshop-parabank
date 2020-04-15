@@ -12,7 +12,7 @@ import static org.testng.Assert.assertFalse;
 public class OpenNewAccountTest extends BaseTest {
 
     @BeforeMethod
-    public void login() {
+    public void ensureLogin() {
         homePage.login(testUsername, testPassword);
     }
 

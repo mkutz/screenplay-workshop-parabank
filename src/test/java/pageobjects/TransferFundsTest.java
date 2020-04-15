@@ -10,7 +10,7 @@ import static org.testng.Assert.assertEquals;
 public class TransferFundsTest extends BaseTest {
 
     @BeforeMethod
-    public void login() {
+    public void ensureLogin() {
         homePage.login(testUsername, testPassword);
     }
 
