@@ -11,10 +11,10 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 
 public class AccountsOverviewPage extends Page {
 
-    private static final By balanceCell = By.cssSelector("td:nth-child(2)");
     private static final By accountRows = By.cssSelector("#accountTable tbody tr.ng-scope");
     private static final By mainAccountRow = By.cssSelector("#accountTable tbody tr.ng-scope:nth-child(1)");
     private static final By accountIdCell = By.cssSelector("td:nth-child(1)");
+    private static final By balanceCell = By.cssSelector("td:nth-child(2)");
 
     public AccountsOverviewPage(WebDriver webDriver) {
         super(webDriver);
