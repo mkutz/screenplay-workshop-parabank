@@ -23,7 +23,7 @@ public class Credentials implements Fact {
     }
 
     public static Credentials defaultCredentials() {
-        return new Credentials("john", "demo!");
+        return new Credentials("john", "demo");
     }
 
     public String getUsername() {
