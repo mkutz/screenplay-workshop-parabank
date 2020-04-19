@@ -10,10 +10,10 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 
 public class TransferFundsPage extends Page {
 
-    private final By amountInput = By.id("amount");
-    private final By fromAccountIdSelect = By.id("fromAccountId");
-    private final By toAccountIdSelect = By.id("toAccountId");
-    private final By transferButton = By.cssSelector("input[type=submit]");
+    private static final By amountInput = By.id("amount");
+    private static final By fromAccountIdSelect = By.id("fromAccountId");
+    private static final By toAccountIdSelect = By.id("toAccountId");
+    private static final By transferButton = By.cssSelector("input[type=submit]");
 
 
     public TransferFundsPage(WebDriver webDriver) {
