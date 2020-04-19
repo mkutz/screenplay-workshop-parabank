@@ -41,4 +41,9 @@ public class OpenNewAccount implements Task {
 
         actor.knows(newAccountId(webDriver.findElement(newAccountLink).getText()));
     }
+
+    @Override
+    public String toString() {
+        return "OpenNewAccount{}";
+    }
 }

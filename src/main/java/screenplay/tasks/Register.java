@@ -44,4 +44,9 @@ public class Register implements Task {
 
         webDriver.findElement(By.cssSelector("#customerForm input.button")).click();
     }
+
+    @Override
+    public String toString() {
+        return "Register{}";
+    }
 }

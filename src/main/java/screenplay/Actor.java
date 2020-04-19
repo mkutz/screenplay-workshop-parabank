@@ -1,5 +1,7 @@
 package screenplay;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import screenplay.abilities.Ability;
 import screenplay.facts.Fact;
 import screenplay.questions.Question;
@@ -10,15 +12,19 @@ import java.util.Set;
 
 public class Actor {
 
+    private static final Logger log = LoggerFactory.getLogger(Actor.class);
+
     private final String name;
     private final Set<Ability> abilities = new HashSet<>();
     private final Set<Fact> facts = new HashSet<>();
 
     public Actor(String name) {
+        log.info(String.format("Creating new actor named \"%s\"", name));
         this.name = name;
     }
 
     public Actor can(Ability ability) {
+        log.info(String.format("%s can %s", this, ability));
         abilities.add(ability);
         return this;
     }
@@ -32,15 +38,18 @@ public class Actor {
     }
 
     public void perform(Task task) {
+        log.info(String.format("%s performs %s", this, task));
         task.performAs(this);
     }
 
     public <T> T seesThat(Question<T> question) {
+        log.info(String.format("%s sees that %s", this, question));
         return question.answeredBy(this);
     }
 
     public Actor knows(Fact fact) {
         facts.add(fact);
+        log.info(String.format("%s knows %s", name, fact));
         return this;
     }
 

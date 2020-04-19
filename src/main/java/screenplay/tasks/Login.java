@@ -6,8 +6,6 @@ import screenplay.Actor;
 import screenplay.abilities.BrowseTheWeb;
 import screenplay.facts.Credentials;
 
-import static screenplay.facts.MainAccountId.mainAccountId;
-
 public class Login implements Task {
 
     private Login() {
@@ -24,5 +22,10 @@ public class Login implements Task {
         webDriver.findElement(By.name("username")).sendKeys(credentials.getUsername());
         webDriver.findElement(By.name("password")).sendKeys(credentials.getPassword());
         webDriver.findElement(By.cssSelector(".login input.button")).click();
+    }
+
+    @Override
+    public String toString() {
+        return "Login{}";
     }
 }
