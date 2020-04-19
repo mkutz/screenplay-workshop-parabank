@@ -5,18 +5,18 @@ import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends Page {
 
-    private final By firstNameInput = By.id("customer.firstName");
-    private final By lastNameInput = By.id("customer.lastName");
-    private final By addressStreetInput = By.id("customer.address.street");
-    private final By addressCityInput = By.id("customer.address.city");
-    private final By addressStateInput = By.id("customer.address.state");
-    private final By addressZipCodeInput = By.id("customer.address.zipCode");
-    private final By phoneNumberInput = By.id("customer.phoneNumber");
-    private final By ssnInput = By.id("customer.ssn");
-    private final By usernameInput = By.id("customer.username");
-    private final By passwordInput = By.id("customer.password");
-    private final By passwordRepeatInput = By.id("repeatedPassword");
-    private final By submitButton = By.cssSelector("#customerForm input.button");
+    private static final By firstNameInput = By.id("customer.firstName");
+    private static final By lastNameInput = By.id("customer.lastName");
+    private static final By addressStreetInput = By.id("customer.address.street");
+    private static final By addressCityInput = By.id("customer.address.city");
+    private static final By addressStateInput = By.id("customer.address.state");
+    private static final By addressZipCodeInput = By.id("customer.address.zipCode");
+    private static final By phoneNumberInput = By.id("customer.phoneNumber");
+    private static final By ssnInput = By.id("customer.ssn");
+    private static final By usernameInput = By.id("customer.username");
+    private static final By passwordInput = By.id("customer.password");
+    private static final By passwordRepeatInput = By.id("repeatedPassword");
+    private static final By submitButton = By.cssSelector("#customerForm input.button");
 
     public RegisterPage(WebDriver webDriver) {
         super(webDriver);
