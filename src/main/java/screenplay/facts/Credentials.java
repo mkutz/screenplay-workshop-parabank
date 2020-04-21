@@ -14,10 +14,6 @@ public class Credentials implements Fact {
         this.password = password;
     }
 
-    public static Credentials credentials(String username, String password) {
-        return new Credentials(username, password);
-    }
-
     public static Credentials randomCredentials() {
         return new Credentials(randomAlphabetic(12), "Sup3rS3cr3t!");
     }
