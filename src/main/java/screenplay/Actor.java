@@ -7,16 +7,17 @@ import screenplay.facts.Fact;
 import screenplay.questions.Question;
 import screenplay.tasks.Task;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class Actor {
 
     private static final Logger log = LoggerFactory.getLogger(Actor.class);
 
     private final String name;
-    private final Set<Ability> abilities = new HashSet<>();
-    private final Set<Fact> facts = new HashSet<>();
+    private final Map<Class<? extends Ability>, Ability> abilities = new HashMap<>();
+    private final Map<Class<? extends Fact>, Fact> facts = new HashMap<>();
 
     public Actor(String name) {
         log.info(String.format("Creating new actor named \"%s\"", name));
@@ -25,19 +26,18 @@ public class Actor {
 
     public Actor can(Ability ability) {
         log.info(String.format("%s can %s", this, ability));
-        abilities.add(ability);
+        abilities.put(ability.getClass(), ability);
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Ability> T getAbility(Class<T> abilityClass) {
-        return (T) abilities.stream()
-                .filter(ability -> (ability.getClass().equals(abilityClass)))
-                .findAny()
+    public <T extends Ability> T usesAbility(Class<T> abilityClass) {
+        log.info(String.format("%s uses ability to %s", this, abilityClass.getSimpleName()));
+        return (T) Optional.ofNullable(abilities.get(abilityClass))
                 .orElseThrow(() -> new MissingAbilityException(this, abilityClass));
     }
 
-    public void perform(Task task) {
+    public void performs(Task task) {
         log.info(String.format("%s performs %s", this, task));
         task.performAs(this);
     }
@@ -48,16 +48,15 @@ public class Actor {
     }
 
     public Actor knows(Fact fact) {
-        facts.add(fact);
-        log.info(String.format("%s knows %s", name, fact));
+        facts.put(fact.getClass(), fact);
+        log.info(String.format("%s knows %s", this, fact));
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Fact> T getFact(Class<T> factClass) {
-        return (T) facts.stream()
-                .filter(fact -> (fact.getClass().equals(factClass)))
-                .findAny()
+    public <T extends Fact> T remembers(Class<T> factClass) {
+        log.info(String.format("%s remembers %s", this, factClass.getSimpleName()));
+        return (T) Optional.ofNullable(facts.get(factClass))
                 .orElseThrow(() -> new MissingFactException(this, factClass));
     }
 

@@ -17,27 +17,27 @@ public class Register implements Task {
 
     @Override
     public void performAs(Actor actor) {
-        WebDriver webDriver = actor.getAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
 
         webDriver.findElement(By.linkText("Register")).click();
 
-        FullName fullName = actor.getFact(FullName.class);
+        FullName fullName = actor.remembers(FullName.class);
         webDriver.findElement(By.id("customer.firstName")).sendKeys(fullName.getFirstName());
         webDriver.findElement(By.id("customer.lastName")).sendKeys(fullName.getLastName());
 
-        Address address = actor.getFact(Address.class);
+        Address address = actor.remembers(Address.class);
         webDriver.findElement(By.id("customer.address.street")).sendKeys(address.getStreet());
         webDriver.findElement(By.id("customer.address.city")).sendKeys(address.getCity());
         webDriver.findElement(By.id("customer.address.state")).sendKeys(address.getState());
         webDriver.findElement(By.id("customer.address.zipCode")).sendKeys(address.getZipCode());
 
-        PhoneNumber phoneNumber = actor.getFact(PhoneNumber.class);
+        PhoneNumber phoneNumber = actor.remembers(PhoneNumber.class);
         webDriver.findElement(By.id("customer.phoneNumber")).sendKeys(phoneNumber.getPhoneNumber());
 
-        Ssn ssn = actor.getFact(Ssn.class);
+        Ssn ssn = actor.remembers(Ssn.class);
         webDriver.findElement(By.id("customer.ssn")).sendKeys(ssn.getSsn());
 
-        Credentials credentials = actor.getFact(Credentials.class);
+        Credentials credentials = actor.remembers(Credentials.class);
         webDriver.findElement(By.id("customer.username")).sendKeys(credentials.getUsername());
         webDriver.findElement(By.id("customer.password")).sendKeys(credentials.getPassword());
         webDriver.findElement(By.id("repeatedPassword")).sendKeys(credentials.getPassword());

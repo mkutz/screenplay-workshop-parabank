@@ -10,7 +10,7 @@ public class LoginScreenplay extends BaseScreenplay {
 
     @Test
     public void canLogin() {
-        user.perform(login());
+        user.performs(login());
 
         assertTrue(user.seesThat(loggedIn()));
     }

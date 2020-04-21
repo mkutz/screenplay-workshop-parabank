@@ -17,8 +17,8 @@ public class Login implements Task {
 
     @Override
     public void performAs(Actor actor) {
-        WebDriver webDriver = actor.getAbility(BrowseTheWeb.class).getWebDriver();
-        Credentials credentials = actor.getFact(Credentials.class);
+        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
+        Credentials credentials = actor.remembers(Credentials.class);
         webDriver.findElement(By.name("username")).sendKeys(credentials.getUsername());
         webDriver.findElement(By.name("password")).sendKeys(credentials.getPassword());
         webDriver.findElement(By.cssSelector(".login input.button")).click();

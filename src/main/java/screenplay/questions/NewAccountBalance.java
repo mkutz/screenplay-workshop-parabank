@@ -21,9 +21,9 @@ public class NewAccountBalance implements Question<Integer> {
 
     @Override
     public Integer answeredBy(Actor actor) {
-        WebDriver webDriver = actor.getAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
 
-        String newAccountId = actor.getFact(NewAccountId.class).getNewAccountId();
+        String newAccountId = actor.remembers(NewAccountId.class).getNewAccountId();
 
         webDriver.findElement(By.linkText("Accounts Overview")).click();
         new WebDriverWait(webDriver, 5)

@@ -16,7 +16,12 @@ public class LoggedIn implements Question<Boolean> {
 
     @Override
     public Boolean answeredBy(Actor actor) {
-        WebDriver webDriver = actor.getAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
         return webDriver.findElement(By.linkText("Log Out")).isDisplayed();
+    }
+
+    @Override
+    public String toString() {
+        return "LoggedIn{}";
     }
 }

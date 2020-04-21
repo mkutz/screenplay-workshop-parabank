@@ -25,7 +25,7 @@ public class RegisterScreenplay extends BaseScreenplay {
 
     @Test
     public void canRegister() {
-        user.perform(register());
+        user.performs(register());
 
         assertTrue(user.seesThat(loggedIn()));
     }

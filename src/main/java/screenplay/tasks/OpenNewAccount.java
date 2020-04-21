@@ -25,7 +25,7 @@ public class OpenNewAccount implements Task {
 
     @Override
     public void performAs(Actor actor) {
-        WebDriver webDriver = actor.getAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
 
         webDriver.findElement(By.linkText("Open New Account")).click();
         new WebDriverWait(webDriver, 3)

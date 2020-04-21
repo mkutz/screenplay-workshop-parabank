@@ -2,7 +2,6 @@ package screenplay;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import screenplay.tasks.Login;
 
 import static org.testng.Assert.assertEquals;
 import static screenplay.questions.NewAccountBalance.newAccountBalance;
@@ -13,12 +12,12 @@ public class OpenNewAccountScreenplay extends BaseScreenplay {
 
     @BeforeMethod
     public void ensureLogin() {
-        user.perform(login());
+        user.performs(login());
     }
 
     @Test
     public void canOpenNewAccount() {
-        user.perform(openNewAccount());
+        user.performs(openNewAccount());
 
         assertEquals(user.seesThat(newAccountBalance()).intValue(), 10000);
     }
