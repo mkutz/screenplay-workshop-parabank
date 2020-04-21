@@ -1,12 +1,14 @@
 package pageobjects;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import pageobject.pages.HomePage;
+
+import static io.github.bonigarcia.wdm.WebDriverManager.chromiumdriver;
 
 abstract public class BaseTest {
 
@@ -15,9 +17,13 @@ abstract public class BaseTest {
     protected String testUsername = "john";
     protected String testPassword = "demo";
 
+    @BeforeSuite
+    public void setUpWebDriverBinary() {
+        chromiumdriver().setup();
+    }
+
     @BeforeClass
     public void setUpWebDriver() {
-        WebDriverManager.chromiumdriver().setup();
         webDriver = new ChromeDriver();
     }
 
