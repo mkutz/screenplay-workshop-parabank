@@ -4,9 +4,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
-import static screenplay.questions.NewAccountBalance.newAccountBalance;
-import static screenplay.tasks.Login.login;
-import static screenplay.tasks.OpenNewAccount.openNewAccount;
+import static screenplay.questions.NewAccountBalanceQuestion.newAccountBalance;
+import static screenplay.tasks.LoginTask.login;
+import static screenplay.tasks.OpenNewAccountTask.openNewAccount;
 
 public class OpenNewAccountScreenplay extends BaseScreenplay {
 

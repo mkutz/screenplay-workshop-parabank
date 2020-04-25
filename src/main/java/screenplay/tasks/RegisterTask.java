@@ -3,21 +3,21 @@ package screenplay.tasks;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import screenplay.Actor;
-import screenplay.abilities.BrowseTheWeb;
+import screenplay.abilities.BrowseTheWebAbility;
 import screenplay.facts.*;
 
-public class Register implements Task {
+public class RegisterTask implements Task {
 
-    public static Register register() {
-        return new Register();
+    public static RegisterTask register() {
+        return new RegisterTask();
     }
 
-    private Register() {
+    private RegisterTask() {
     }
 
     @Override
     public void performAs(Actor actor) {
-        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWebAbility.class).getWebDriver();
 
         webDriver.findElement(By.linkText("Register")).click();
 

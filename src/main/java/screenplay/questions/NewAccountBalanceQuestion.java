@@ -4,24 +4,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import screenplay.Actor;
-import screenplay.abilities.BrowseTheWeb;
+import screenplay.abilities.BrowseTheWebAbility;
 import screenplay.facts.NewAccountId;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 
-public class NewAccountBalance implements Question<Integer> {
+public class NewAccountBalanceQuestion implements Question<Integer> {
 
-    private NewAccountBalance() {
+    private NewAccountBalanceQuestion() {
     }
 
 
-    public static NewAccountBalance newAccountBalance() {
-        return new NewAccountBalance();
+    public static NewAccountBalanceQuestion newAccountBalance() {
+        return new NewAccountBalanceQuestion();
     }
 
     @Override
     public Integer answeredBy(Actor actor) {
-        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWebAbility.class).getWebDriver();
 
         String newAccountId = actor.remembers(NewAccountId.class).getNewAccountId();
 
@@ -34,11 +34,16 @@ public class NewAccountBalance implements Question<Integer> {
                 .filter(accountRow -> newAccountId.equals(accountRow.findElement(By.cssSelector("td:nth-child(1)")).getText()))
                 .findAny()
                 .map(accountRow -> accountRow.findElement(By.cssSelector("td:nth-child(2)")).getText())
-                .map(NewAccountBalance::dollarStringToCents)
+                .map(NewAccountBalanceQuestion::dollarStringToCents)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Account %s not in account overview", newAccountId)));
     }
 
     private static int dollarStringToCents(String dollarString) {
         return Integer.parseInt(dollarString.replaceAll("[^\\d]", ""));
+    }
+
+    @Override
+    public String toString() {
+        return "NewAccountBalanceQuestion{}";
     }
 }

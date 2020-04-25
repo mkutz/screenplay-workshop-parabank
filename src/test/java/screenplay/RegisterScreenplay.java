@@ -9,8 +9,8 @@ import static screenplay.facts.Credentials.randomCredentials;
 import static screenplay.facts.FullName.defaultFullName;
 import static screenplay.facts.PhoneNumber.defaultPhoneNumber;
 import static screenplay.facts.Ssn.defaultSsn;
-import static screenplay.questions.LoggedIn.loggedIn;
-import static screenplay.tasks.Register.register;
+import static screenplay.questions.LoggedInQuestion.loggedIn;
+import static screenplay.tasks.RegisterTask.register;
 
 public class RegisterScreenplay extends BaseScreenplay {
 

@@ -6,26 +6,26 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import screenplay.Actor;
-import screenplay.abilities.BrowseTheWeb;
+import screenplay.abilities.BrowseTheWebAbility;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static screenplay.facts.NewAccountId.newAccountId;
 
-public class OpenNewAccount implements Task {
+public class OpenNewAccountTask implements Task {
 
     private static final By fromAccountIdSelect = By.id("fromAccountId");
     private static final By newAccountLink = By.id("newAccountId");
 
-    private OpenNewAccount() {
+    private OpenNewAccountTask() {
     }
 
-    public static OpenNewAccount openNewAccount() {
-        return new OpenNewAccount();
+    public static OpenNewAccountTask openNewAccount() {
+        return new OpenNewAccountTask();
     }
 
     @Override
     public void performAs(Actor actor) {
-        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
+        WebDriver webDriver = actor.usesAbility(BrowseTheWebAbility.class).getWebDriver();
 
         webDriver.findElement(By.linkText("Open New Account")).click();
         new WebDriverWait(webDriver, 3)

@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import static io.github.bonigarcia.wdm.WebDriverManager.chromiumdriver;
-import static screenplay.abilities.BrowseTheWeb.browseTheWebWith;
+import static screenplay.abilities.BrowseTheWebAbility.browseTheWebWith;
 import static screenplay.facts.Credentials.defaultCredentials;
 
 public abstract class BaseScreenplay {

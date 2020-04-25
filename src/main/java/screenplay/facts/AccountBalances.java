@@ -3,8 +3,6 @@ package screenplay.facts;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.stream.Collectors.toList;
-
 public class AccountBalances implements Fact {
 
     List<AccountBalance> balances;
@@ -17,17 +15,8 @@ public class AccountBalances implements Fact {
         return new AccountBalances(balances);
     }
 
-    public int getAccountBalance(String accountId) {
-        return balances.stream()
-                .filter(balance -> balance.getAccountId().equals(accountId))
-                .findAny().orElseThrow(() -> new IllegalStateException("Unknown account ID " + accountId))
-                .getBalanceInCents();
-    }
-
-    public List<String> getAccountIds() {
-        return balances.stream()
-                .map(AccountBalance::getAccountId)
-                .collect(toList());
+    public int getAccountBalance(int accountIndex) {
+        return balances.get(accountIndex).getBalanceInCents();
     }
 
     @Override

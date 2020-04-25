@@ -1,12 +1,13 @@
-package screenplay.tasks;
+package screenplay.questions;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import screenplay.Actor;
-import screenplay.abilities.BrowseTheWeb;
+import screenplay.abilities.BrowseTheWebAbility;
 import screenplay.facts.AccountBalance;
+import screenplay.facts.AccountBalances;
 
 import java.util.List;
 
@@ -14,18 +15,18 @@ import static java.util.stream.Collectors.toList;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 import static screenplay.facts.AccountBalances.accountBalances;
 
-public class CheckAccountBalances implements Task {
+public class AccountBalancesQuestion implements Question<AccountBalances> {
 
-    private CheckAccountBalances() {
+    private AccountBalancesQuestion() {
     }
 
-    public static CheckAccountBalances checkAccountBalances() {
-        return new CheckAccountBalances();
+    public static AccountBalancesQuestion currentAccountBalances() {
+        return new AccountBalancesQuestion();
     }
 
     @Override
-    public void performAs(Actor actor) {
-        WebDriver webDriver = actor.usesAbility(BrowseTheWeb.class).getWebDriver();
+    public AccountBalances answeredBy(Actor actor) {
+        WebDriver webDriver = actor.usesAbility(BrowseTheWebAbility.class).getWebDriver();
 
         if (!webDriver.getCurrentUrl().endsWith("parabank/overview.htm")) {
             webDriver.findElement(By.linkText("Accounts Overview")).click();
@@ -38,6 +39,8 @@ public class CheckAccountBalances implements Task {
                 .map(accountRow -> new AccountBalance(getAccountId(accountRow), getAccountBalance(accountRow)))
                 .collect(toList())
         ));
+
+        return actor.remembers(AccountBalances.class);
     }
 
     private static String getAccountId(WebElement accountRow) {
@@ -54,6 +57,6 @@ public class CheckAccountBalances implements Task {
 
     @Override
     public String toString() {
-        return "CheckAccountBalances{}";
+        return "AccountBalancesQuestion{}";
     }
 }
