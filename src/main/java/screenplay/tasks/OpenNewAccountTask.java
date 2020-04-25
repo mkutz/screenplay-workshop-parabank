@@ -44,6 +44,6 @@ public class OpenNewAccountTask implements Task {
 
     @Override
     public String toString() {
-        return "OpenNewAccount{}";
+        return "OpenNewAccountTask{}";
     }
 }

@@ -35,7 +35,7 @@ public class BrowseTheWebAbility implements Ability {
 
     @Override
     public String toString() {
-        return "BrowseTheWeb{" +
+        return "BrowseTheWebAbility{" +
                 "webDriver=" + webDriver +
                 '}';
     }

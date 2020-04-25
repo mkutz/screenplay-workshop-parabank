@@ -26,6 +26,6 @@ public class LoginTask implements Task {
 
     @Override
     public String toString() {
-        return "Login{}";
+        return "LoginTask{}";
     }
 }

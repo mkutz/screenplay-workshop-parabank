@@ -47,6 +47,6 @@ public class RegisterTask implements Task {
 
     @Override
     public String toString() {
-        return "Register{}";
+        return "RegisterTask{}";
     }
 }
