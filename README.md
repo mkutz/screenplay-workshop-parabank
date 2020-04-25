@@ -10,13 +10,23 @@ Hello and welcome to this course about the screenplay design pattern.
 
 My name is Michael Kutz, and I'll be your instructor.
 
-In this course we will look at an existing test suite written in Java using the Page Object pattern.
- 
-We will analyse what the shortcomings of that well-known pattern are and how screenplay can help us there.
+In this course we will work with an existing test suite written in Java using the page object pattern.
 
-After that we will one-by-one introduce the concepts of screenplay and recreate the existing test suite screenplay-based.
+First, we will analyse what the shortcomings of the given implementation.
 
-If you're not familiar with Selenium in Java, or the page object pattern, I highly recommend taking the course [Selenium WebDriver with Java](https://testautomationu.applitools.com/selenium-webdriver-tutorial-java/) by [Angie Jones](https://testautomationu.applitools.com/instructors/angie_jones.html).
+After that we will one-by-one introduce the concepts of the screenplay design pattern and recreate the tests using them.
+
+Once we have transformed the tests, we will compare them to the page objects version and see how they are improved.
+
+Finally, I will give you a brief overview on the Serenity framework, which uses screenplay as its main pattern and combines it with powerful reporting.
+
+So, at the end of the course you will have clear understanding about
+- What is the screenplay pattern is
+- What is needed to apply it
+- How you can transform your existing tests
+- Why and when screenplay is better than page objects
+
+If you're not familiar with Selenium in Java, or the page object pattern, I highly recommend taking the course [Selenium WebDriver with Java](https://testautomationu.applitools.com/selenium-webdriver-tutorial-java/) by [Angie Jones](https://testautomationu.applitools.com/instructors/angie_jones.html).RrR
 
 You can find the link to the GitHub repository below this video, so you can checkout the code and follow the refactoring steps I take yourself. All you will need is
 - a Java SDK &geq; v11\
@@ -27,6 +37,10 @@ You can find the link to the GitHub repository below this video, so you can chec
 ### Part 1: Page Object VS Screenplay Pattern
 
 Welcome back to part 1.
+
+Let's have a look at the test suite.
+
+As you can see 
 
 The Page Object pattern is an effective and well-supported way to organize test code.
 
@@ -46,23 +60,23 @@ In more complex scenarios, we end up with a lot of fine-grained steps, and it ca
 
 The manual test case for this feature, it would be something like:
 
-> Given that the user has opened a new account\
-> When they transfer $10 form the main account to the new account\
-> Then the new account's balance increased by that amount\
-> And the main account's balance decreased by that amount.
+> Given that the user has at least two accounts\
+> When they transfer $10 form their first to the second account\
+> Then the first account's balance decreased by that amount\
+> And the second account's balance increased by that amount.
 
 Let's read the code:
 
-> Given that the user has opened a new account\
-> And memorizes the new account's ID\
+> Given that the user clicks the open new account link\
+> And opens a new account\
 > And the user clicks the account overview link\
-> And memorizes their main account's ID and balance\
-> And memorizes the new account's balance\
+> And memorizes the first account's balance\
+> And memorizes the second account's balance\
 > When the user clicks the transfer funds link\
-> And transfers $10 from the main account to the new account
-> Then the user clicks the account overview link\
-> And sees that the new account's balance increased by the transfer amount
-> And the main account's balance decreased by the transfer amount.
+> And transfers $10 from the first account to the second account\
+> And the user clicks the account overview link\
+> Then the user sees that the first account's balance is decreased by the amount\
+> And the second account's balance increased by the amount.
 
 Quite a lot of boring code that makes it hard to see what the test is actually about.
 
@@ -275,14 +289,14 @@ Now we can add the new [AccountBalance] question to verify the initial balance o
 [John Ferguson Smart]: <https://twitter.com/wakaleo>
 [Page Objects Refactored]: <https://ideas.riverglide.com/page-objects-refactored-12ec3541990#.ekkiguobe>
 
-[RegisterPage]: <src/main/java/pageobject/pages/RegisterPage.java>
-[AccountsOverviewPage]: <src/main/java/pageobject/pages/AccountsOverviewPage.java>
-[AccountOpenedPage]: <src/main/java/pageobject/pages/AccountOpenedPage.java>
-[OpenNewAccountPage]: <src/main/java/pageobject/pages/OpenNewAccountPage.java>
+[RegisterPage]: <src/main/java/pageobject/RegisterPage.java>
+[AccountsOverviewPage]: <src/main/java/pageobject/AccountsOverviewPage.java>
+[AccountOpenedPage]: <src/main/java/pageobject/AccountOpenedPage.java>
+[OpenNewAccountPage]: <src/main/java/pageobject/OpenNewAccountPage.java>
 [BaseTest]: <src/test/java/pageobjects/BaseTest.java>
 [LoginTest]: <src/test/java/pageobjects/LoginTest.java>
 [TransferFundsTest]: <src/test/java/pageobjects/TransferFundsTest.java>
-[HomePage]: <src/main/java/pageobject/pages/HomePage.java>
+[HomePage]: <src/main/java/pageobject/HomePage.java>
 [Actor]: <src/main/java/screenplay/Actor.java>
 [BaseScreenplay]: <src/test/java/screenplay/BaseScreenplay.java>
 [Ability]: <src/main/java/screenplay/abilities/Ability.java>

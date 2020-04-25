@@ -2,9 +2,9 @@ package pageobjects;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pageobject.pages.AccountsOverviewPage;
-import pageobject.pages.OpenNewAccountPage;
-import pageobject.pages.TransferFundsPage;
+import pageobject.AccountsOverviewPage;
+import pageobject.OpenNewAccountPage;
+import pageobject.TransferFundsPage;
 
 import static org.testng.Assert.assertEquals;
 
@@ -22,7 +22,7 @@ public class TransferFundsTest extends BaseTest {
         int amountInCents = 1000;
 
         OpenNewAccountPage openNewAccountPage = homePage.clickOpenNewAccountLink();
-        openNewAccountPage.openAccount().getNewAccountId();
+        openNewAccountPage.openAccount();
 
         AccountsOverviewPage accountsOverviewPage = homePage.clickAccountsOverviewLink();
         int originalFromBalance = accountsOverviewPage.getAccountBalanceInCents(fromAccountIndex);
@@ -32,6 +32,7 @@ public class TransferFundsTest extends BaseTest {
         transferFundsPage.transfer(amountInCents, fromAccountIndex, toAccountIndex);
 
         homePage.clickAccountsOverviewLink();
+
         assertEquals(accountsOverviewPage.getAccountBalanceInCents(fromAccountIndex),
                 originalFromBalance - amountInCents);
         assertEquals(accountsOverviewPage.getAccountBalanceInCents(toAccountIndex),

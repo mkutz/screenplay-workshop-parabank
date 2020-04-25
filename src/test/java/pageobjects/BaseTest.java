@@ -6,7 +6,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import pageobject.pages.HomePage;
+import pageobject.HomePage;
 
 import static io.github.bonigarcia.wdm.WebDriverManager.chromiumdriver;
 

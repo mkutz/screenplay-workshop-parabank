@@ -2,9 +2,9 @@ package pageobjects;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pageobject.pages.AccountOpenedPage;
-import pageobject.pages.AccountsOverviewPage;
-import pageobject.pages.OpenNewAccountPage;
+import pageobject.AccountOpenedPage;
+import pageobject.AccountsOverviewPage;
+import pageobject.OpenNewAccountPage;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
