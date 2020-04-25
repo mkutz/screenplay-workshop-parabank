@@ -40,10 +40,6 @@ public class AccountsOverviewPage extends Page {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Account %s not in account overview", accountId)));
     }
 
-    public int getMainAccountBalanceInCents() {
-        return dollarStringToCents(webDriver.findElements(accountRows).get(0).findElement(balanceCell).getText());
-    }
-
     private static int dollarStringToCents(String dollarString) {
         return Integer.parseInt(dollarString.replaceAll("[^-\\d]", ""));
     }
