@@ -12,7 +12,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 public class AccountsOverviewPage extends Page {
 
     private static final By accountRows = By.cssSelector("#accountTable tbody tr.ng-scope");
-    private static final By mainAccountRow = By.cssSelector("#accountTable tbody tr.ng-scope:nth-child(1)");
     private static final By accountIdCell = By.cssSelector("td:nth-child(1)");
     private static final By balanceCell = By.cssSelector("td:nth-child(2)");
 
@@ -28,6 +27,10 @@ public class AccountsOverviewPage extends Page {
                 .collect(toList());
     }
 
+    public int getAccountBalanceInCents(int index) {
+        return dollarStringToCents(webDriver.findElements(accountRows).get(index).findElement(balanceCell).getText());
+    }
+
     public int getAccountBalanceInCents(String accountId) {
         return webDriver.findElements(accountRows).stream()
                 .filter(accountRow -> accountId.equals(accountRow.findElement(accountIdCell).getText()))
@@ -38,10 +41,7 @@ public class AccountsOverviewPage extends Page {
     }
 
     public int getMainAccountBalanceInCents() {
-        String balanceText = webDriver.findElement(mainAccountRow)
-                .findElement(By.cssSelector("td:nth-child(2)"))
-                .getText();
-        return dollarStringToCents(balanceText);
+        return dollarStringToCents(webDriver.findElements(accountRows).get(0).findElement(balanceCell).getText());
     }
 
     private static int dollarStringToCents(String dollarString) {

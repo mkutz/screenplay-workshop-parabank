@@ -23,12 +23,10 @@ public class TransferFundsPage extends Page {
     }
 
 
-    public void transfer(int amountInCents, String fromAccountId, String toAccountId) {
+    public void transfer(int amountInCents, int fromAccountIndex, int toAccountIndex) {
         webDriver.findElement(amountInput).sendKeys(Integer.toString(amountInCents / 100));
-        if (null != fromAccountId) {
-            new Select(webDriver.findElement(fromAccountIdSelect)).selectByValue(fromAccountId);
-        }
-        new Select(webDriver.findElement(toAccountIdSelect)).selectByValue(toAccountId);
+        new Select(webDriver.findElement(fromAccountIdSelect)).selectByIndex(fromAccountIndex);
+        new Select(webDriver.findElement(toAccountIdSelect)).selectByIndex(toAccountIndex);
         webDriver.findElement(transferButton).click();
     }
 }
