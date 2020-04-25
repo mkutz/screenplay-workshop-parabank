@@ -45,6 +45,6 @@ public class AccountsOverviewPage extends Page {
     }
 
     private static int dollarStringToCents(String dollarString) {
-        return Integer.parseInt(dollarString.replaceAll("[^\\d]", ""));
+        return Integer.parseInt(dollarString.replaceAll("[^-\\d]", ""));
     }
 }
