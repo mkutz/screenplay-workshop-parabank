@@ -32,7 +32,7 @@ public class TransferFundsTest extends BaseTest {
         transferFundsPage.transfer(amountInCents, fromAccountIndex, toAccountIndex);
 
         homePage.clickAccountsOverviewLink();
-        assertEquals(accountsOverviewPage.getMainAccountBalanceInCents(),
+        assertEquals(accountsOverviewPage.getAccountBalanceInCents(fromAccountIndex),
                 originalFromBalance - amountInCents);
         assertEquals(accountsOverviewPage.getAccountBalanceInCents(toAccountIndex),
                 originalToBalance + amountInCents);
