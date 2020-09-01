@@ -1,10 +1,10 @@
 package pageobjects;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 import pageobject.RegisterPage;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RegisterTest extends BaseTest {
 

@@ -6,6 +6,8 @@
 
 ### Part 0: Introduction
 
+// Presentation at https://slides.com/mkutz/screenplay-design-pattern-course
+
 Hello and welcome to this course about the screenplay design pattern.
 
 My name is Michael Kutz, and I'll be your instructor.
@@ -26,7 +28,7 @@ So, at the end of the course you will have clear understanding about
 - How you can transform your existing tests
 - Why and when screenplay is better than page objects
 
-If you're not familiar with Selenium in Java, or the page object pattern, I highly recommend taking the course [Selenium WebDriver with Java](https://testautomationu.applitools.com/selenium-webdriver-tutorial-java/) by [Angie Jones](https://testautomationu.applitools.com/instructors/angie_jones.html).RrR
+If you're not familiar with Selenium in Java, or the page object pattern, I highly recommend taking the course [Selenium WebDriver with Java](https://testautomationu.applitools.com/selenium-webdriver-tutorial-java/) by [Angie Jones](https://testautomationu.applitools.com/instructors/angie_jones.html).
 
 You can find the link to the GitHub repository below this video, so you can checkout the code and follow the refactoring steps I take yourself. All you will need is
 - a Java SDK &geq; v11\
@@ -88,11 +90,11 @@ The underlying problem with page objects is that they are stateless. Just like t
 
 We have no simple way of noting things down, but saving it in local variables right there in the test.
 
-In modern web applications state is stored mainly on the users' side via cookies, that refer to session data.
+In modern web applications state is stored mainly on the users' side via cookies or web storage, that refer to session data.
 
 So in order to fix our noisy test code problem, we might want a representation of the user. Well, that's the basic idea of the screenplay pattern!
 
-### Part 2: Actors and Tasks
+### Part 2: Actors and Abilities
 
 The central object in a screenplay is an __actor__.
 
@@ -104,43 +106,112 @@ So let's start creating some screenplays using these three concepts.
 
 First I will create a new package `screenplay` next to the existing `pageobject` package, so we can develop our screenplays in parallel and compare the code.
 
+// Create screenplay package
+
 As you can see, all existing tests extend [BaseTest] which does the basic common setup, so let's create a [BaseScreenplay] first to do the same.
+
+// Create (empty) BaseScreenplay class
 
 OK, so instead of the [HomePage], we will use an [Actor] instance to interact with the application. So let's create that class.
 
+// Create Actor class
+
 Just like in the [BaseTest], we want to make sure our WebDriver is set up before, and teared down after all tests have been executed, so we can copy these to methods over.
+
+// Copy setUpWebDriver method
 
 We also like delete all cookies and have the driver set the main page before each test, so we can copy the `reset` method as well.
 
+// Copy reset method
+
 Instead of the [HomePage], let's create a new class [Actor] and create an instance as a field of our [BaseScreenplay]. As the name of the field, we should use the __role__ the actor will play. In our case that role will be a simple user, so let's name the field `user`.
+
+// Replace HomePage field with Actor
+// Let Idea create Actor class
 
 For logging purposes, let's give the actor a name and override the `toString` method to return it.
 
-In order to be able to interact with our application, the [Actor] need abilities, so let's create a Set of abilities as a field of our [Actor]. [Ability] should be an interface to allow creating different abilities for the actor.
+// Create `name` field
+// Override `toString` with return name
+
+We could now simply give the WebDriver to the Actor and start adding methods, like login, register or even transfer founds to the [Actor] class.
+This would be pretty straight forward.
+Our tests would gain some readability.
+We could put knowledge and state into fields of our actor instance.
+
+However, we would end up with a class potentially even larger than our largest page objects as this class would be a collection of _all_ use cases of our application!
+
+To avoid that, the screenplay pattern breaks everything down into generic interfaces for the [Actor] to work with.
+
+The first of these interfaces is the [Ability].
+The [Actor] uses abilities, to interact with the application.
+So let's create a Set of abilities as a field of our [Actor].
+
+// Create the `abilities` field
+// Let Idea create the `Ability` interface
 
 To add abilities to the [Actor], we  create a method `can`, which will return `this`, so we chain methods like this and set up and assign an [Actor] instance in only one line.
 
+// Create builder method `can`
+
 To access abilities, we create a method `getAbiliy` which will return the instance of the requested [Ability] class or throw a [MissingAbilityException], which should tell us in its message who was not able to do what. So let's create that.
+
+// Implement `getAbility`
+// Let Idea Create `MissingAbilityException` and implement it
 
 Let's implement that interface and create the [BrowseTheWeb] ability, which simply wraps a WebDriver instance and provides a getter for it.
 
+// Create `BrowseTheWeb` ability with `webDriver` field and getter
+
 Since we are storing abilities in a HashSet, we should also override `equals` and `hashCode` and for logging purposes, we also override `toString`. So let's rely on our IDE to generate those.
+
+// Let Idea create `equals`, `hashCode` and `toString`
 
 Now let's instantiate the [BrowseTheWeb] in our [BaseScreenplay] and add it to the [Actor]'s abilities using the `can` method.
 
+// In `BaseScreenplay`, add a `can` to the `user` instance and give it a `BrowseTheWeb` instance
+
 Reading the setup line now is still a bit strange due to the `new` keyword. We can get rid of that by using a static method to initialize [BrowseTheWeb]. Let's call it `browseTheWebWith`, to make the line almost plain English.
 
-OK, so now we are setup to create a [LoginScreenplay]. In order to do that, we need the [Actor] to be able to perform __tasks__, in this case a login. So let's create another method `perform` in our [Actor] class which takes an instance of the [Task] interface.
+// Add the static initializer for `BrowseTheWeb`, use it
+
+We now have the basic setup for a screenplay. In the next part we'll transform our first test to the new structure.
+
+
+#### Questions
+
+- Why don't we just give the WebDriver to the Actor and implement tasks using methods?
+  -[ ] Because that's not possible
+  -[ ] The actor class would then contain all the use cases of the application and become really huge
+  -[ ] There's no reason
+
+### Part 3: Performing Tasks
+
+OK, so now we are setup to create our first screenplay: the [LoginScreenplay].
+In order to do that, we need the [Actor] to be able to perform __tasks__, in this case a login. So let's create another method `perform` in our [Actor] class which takes an instance of the [Task] interface.
+
+// Add `perform` method, taking a `Task` instance
+// Let Idea create the `Task` interface
 
 A [Task] can be performed by an [Actor], so we will declare a method `performAs`, which takes an [Actor] instance.
 
-Next we will implement the [Login]. Obviously a login requires a username and a password, so we add those as fields and implement the `performAs` method.
+// Add `performAs` method to the interface, taking an `Actor` instance
+
+Next we will implement the [Login] task. Obviously a login requires a username and a password, so we add those as fields and implement the `performAs` method.
+
+// Implement `Task` as `Login` with `performAs` additionally taking username and password
 
 As the login will happen using a WebDriver, we first need to use the [Actor]'s `getAbility` method to get the [BrowseTheWeb] ability and use its WebDriver instance. This may appear complicated, but allows us to combine different [Ability] instances to perform complex tasks.
 
+// Call `getAbility` from `performAs`, to assign the WebDriver to a local variable.
+
 The actual login code can be copied from the [HomePage] class' `login` method. We only need to inline the locators.
 
-OK, let's execute the test to see if our task is performed as expected.
+// Copy `login` code form `HomePage`
+
+OK, let's execute the test to see if our task performs as expected.
+
+// Execute the LoginScreenplay
 
 As you can see the browser opens, and the login is happening just like in [LoginTest].
 
@@ -148,19 +219,39 @@ We are still missing an essential part of a test: the verification. This we will
 
 ### Part 3: Asking Questions
 
-To finish our first screenplay, we need to answer the __question__ if the user is logged in now.
+To finish our first screenplay, we need to answer the __question__ if our login was successful.
 
-So let's create another method in our [Actor] `seesThat` which takes an instance of the new [Question] interface. Similar to a [Task] being performed by an [Actor], a [Question] must be answered by one. So we create a method `answeredBy` taking an [Actor] as argument.
+So let's create another method in our [Actor] `seesThat` which takes an instance of the new [Question] interface.
 
-Unlike a [Task] a Question should return us an answer. In case of our first Question "is the user logged in?", that answer is either yes or no. So the type of the answer is `Boolean`, but there will be Questions with other types of answers, so let's use Java generics to make the return type of `answeredBy` whatever the question requires.
+// Create `Actor.seesThat(Question)` in Actor
+
+Similar to a [Task] being performed by an [Actor], a [Question] must be answered by one. So we create a method `answeredBy` taking an [Actor] as argument.
+
+// Add `answeredBy(Actor)` to the `Question` interface
+
+Unlike a [Task] a Question should return us an answer. In case of our first Question "is the user logged in?", that answer is either yes or no. So the type of the answer is `Boolean`, but there will be Questions with other types of answers, so let's use Java generics to make the return type of `answeredBy` and `seesThat` whatever the question requires.
+
+// Make `answeredBy` and `seesThat` return a generic type
 
 To implement our first [Question] "[LoggedIn]", we again need to use the actor's [BrowseTheWeb] ability and extract the WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
 
+// Implement `LoggedIn` and add code `HomePage.isLoggedIn` to its `answeredBy` method 
+
 Again, we need to inline the locators, and we also generate `equals`, `hashCode` and `toString`.
 
-To make the code more readable, we will again add a static method to create an instance of [LoggedIn], named `loggedIn`. Now let's use the method within `seesThat` in `assertThat` to verify the effect in our test.
+// Let Idea generate `equals`, `hashCode` and `toString`
+
+To make the code more readable, we will again add a static method to create an instance of [LoggedIn], named `loggedIn`.
+
+// Add static initializer `loggedIn` for `LoggedIn`
+
+Now let's go back to the [LoginScreenplay] and ask the actor if they `seesThat` they are `loggedIn` to verify the effect in our test.
+
+// Add `user.seesThat(loggedIn)` to `LoginScreenplay`
 
 Now let's run our screenplay, which is finally equivalent to the original [LoginTest].
+
+// Execute `LoginScreenplay`
 
 As a homework task, have a look at [RegisterTest] and try to create an equivalent [RegisterScreenplay].
 

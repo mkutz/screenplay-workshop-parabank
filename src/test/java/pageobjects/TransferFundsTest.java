@@ -1,16 +1,16 @@
 package pageobjects;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import pageobject.AccountsOverviewPage;
 import pageobject.OpenNewAccountPage;
 import pageobject.TransferFundsPage;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TransferFundsTest extends BaseTest {
 
-    @BeforeMethod
+    @BeforeEach
     public void ensureLogin() {
         homePage.login(testUsername, testPassword);
     }
