@@ -21,12 +21,6 @@ public class AccountsOverviewPage extends Page {
                 .until(visibilityOfAllElementsLocatedBy(accountRows));
     }
 
-    public List<String> getAccountIdsList() {
-        return webDriver.findElements(accountRows).stream()
-                .map(accountRow -> accountRow.findElement(accountIdCell).getText())
-                .collect(toList());
-    }
-
     public int getAccountBalanceInCents(int index) {
         return dollarStringToCents(webDriver.findElements(accountRows).get(index).findElement(balanceCell).getText());
     }
