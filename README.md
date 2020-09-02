@@ -6,19 +6,19 @@
 
 ### Part 0: Introduction
 
-// Presentation at https://slides.com/mkutz/screenplay-design-pattern-course
+// Presentation at <https://slides.com/mkutz/screenplay-design-pattern-course>
 
 Hello and welcome to this course about the screenplay design pattern.
 
 My name is Michael Kutz, and I'll be your instructor.
 
-In this course we will work with an existing test suite written in Java using the page object pattern.
+In this course we will work with an existing test suite written in Java using the Page Object pattern.
 
-First, we will analyse what the shortcomings of the given implementation.
+In order to follow, you will need a Java Development Kit of version 11 or higher, an IDE like IntelliJ IDEA, and the code that you can find on the GitHub URL below this video.
 
-After that we will one-by-one introduce the concepts of the screenplay design pattern and recreate the tests using them.
+First, we will analyse what the shortcomings of Page Objects followed by a brief introduction of the basic principles of Screenplay.
 
-Once we have transformed the tests, we will compare them to the page objects version and see how they are improved.
+After that we will one-by-one introduce the concepts of the Screenplay design pattern and recreate the tests using them.
 
 Finally, I will give you a brief overview on the Serenity framework, which uses screenplay as its main pattern and combines it with powerful reporting.
 
@@ -30,31 +30,50 @@ So, at the end of the course you will have clear understanding about
 
 If you're not familiar with Selenium in Java, or the page object pattern, I highly recommend taking the course [Selenium WebDriver with Java](https://testautomationu.applitools.com/selenium-webdriver-tutorial-java/) by [Angie Jones](https://testautomationu.applitools.com/instructors/angie_jones.html).
 
-You can find the link to the GitHub repository below this video, so you can checkout the code and follow the refactoring steps I take yourself. All you will need is
-- a Java SDK &geq; v11\
-  If you're running a Unix-like OS, I can highly recommend to use [SDKMan](https://sdkman.io) to get and manage Java (and many other) SDKs.
-- an IDE\
-  I will use [IntelliJ IDEA](https://www.jetbrains.com/idea/) in this course. You can just download the community edition for free or use your preferred IDE instead.
-
 ### Part 1: Page Object VS Screenplay Pattern
 
 Welcome back to part 1.
 
-Let's have a look at the test suite.
+// Presentation at https://slides.com/mkutz/screenplay-design-pattern-course Page Objects and Screenplay
 
-As you can see 
+Let's have quick look into Page Objects.
 
-The Page Object pattern is an effective and well-supported way to organize test code.
+A test can interact with an element of a page using pure Selenium locators.
 
-A page object –like [RegisterPage]– contains locators for page elements we want to interact with, so it abstracts from the page structure.
+However, if we add another test, it is likely it will need to interact with the same elements also used in our first test.
 
-It also contains methods to abstract complex operations, like filling the full address into the form in only one step.
+So we have some code duplication and if the locator for an element needs to be changed, we'd need to change it in every single test using it.
 
-In the [AccountsOverviewPage]'s constructor you can also find some waiting code, to prevent interacting with the page before it is ready.
+Using a Page Object, which contains all the selectors, allows us to define all our locators in one place, avoiding the code duplication.
 
-Or we can put in methods to extract information for easier assertions, like `getAccountIdsList`, which extracts all account IDs from the table or `getAccountBalanceInCents`, which gets the balance of a single account as an integer of cents.
+It may also contain methods to abstract complex operations, like filling the full address into the form in only one step.
 
-However, page objects' methods are typically limited to simple _interactions_ on a single page.
+Let's checkout the code and take a look into some typical Page Objects.
+
+// Switch to Idea
+// Navigate to [RegisterPage]
+
+The [RegisterPage] for example contains a lot of locators, and also several methods for filling all the fields on it.
+
+// Switch to [AccountsOverviewPage]
+
+The [AccountsOverviewPage] is even more complex, as its constructor contains some waiting code, to prevent interacting with the page before it is ready.
+
+// Highlight constructor waiting code
+
+It also contains the methods to extract information.
+
+// Highlight `getAccountIdsList`
+
+`getAccountIdsList` extracts all account IDs from the table.
+
+// Highlight `getAccountBalanceInCents`
+
+`getAccountBalanceInCents` gets the balance of a single account as an integer of cents. Such methods make verifications much easier to read, compared to using such code in tests directly.
+
+// Switch to [TransferFundsTest] and highlight use of `getAccountBalanceInCents`
+
+However, page objects' methods are typically limited to simple _interactions_ on a _single_ page.
 
 This is perfectly OK for simple tests, like a [LoginTest], which is in fact limited to the home page only.
 
@@ -82,17 +101,11 @@ Let's read the code:
 
 Quite a lot of boring code that makes it hard to see what the test is actually about.
 
-In the manual test case, we can simply rely on the tester to memorize or note down all the facts that we need in the then-part of the test. For example, the main account ID could be noted down right after registration.
+Screenplay gives us a representation of the user and of tasks, wich will clear a lot of the noise code away.
 
-Of course, we could store these facts in constants –just like the username and password– but that will cause frequent updates to the tests every time somebody clears the test database.
+Another problem with Page Objects is that they can turn into very large classes, that become hard to maintain as they are used by a lot of tests.
 
-The underlying problem with page objects is that they are stateless. Just like the pages, that they represent.
-
-We have no simple way of noting things down, but saving it in local variables right there in the test.
-
-In modern web applications state is stored mainly on the users' side via cookies or web storage, that refer to session data.
-
-So in order to fix our noisy test code problem, we might want a representation of the user. Well, that's the basic idea of the screenplay pattern!
+As Screenplays use one class per task, that an Actor can perform, these classes usually stay rather small and can be optimized for the one use case only. For example waiting on required content only, 
 
 ### Part 2: Actors and Abilities
 
@@ -217,7 +230,7 @@ As you can see the browser opens, and the login is happening just like in [Login
 
 We are still missing an essential part of a test: the verification. This we will address in the next part.
 
-### Part 3: Asking Questions
+### Part 4: Asking Questions
 
 To finish our first screenplay, we need to answer the __question__ if our login was successful.
 
@@ -255,13 +268,17 @@ Now let's run our screenplay, which is finally equivalent to the original [Login
 
 As a homework task, have a look at [RegisterTest] and try to create an equivalent [RegisterScreenplay].
 
-### Part 4: Knowing Facts
+### Part 5: Knowing Facts
 
-Welcome back to part 4.
+Welcome back.
 
 I hope you were able to create [RegisterScreenplay].
 
-Let's have a look into my version of it. As you can see the new [Register] task requires a lot of test data, that are still right there in the screenplay's code. 
+Let's have a look into my version of it.
+
+// Open `RegisterScreenplay`
+
+As you can see the new [Register] task requires a lot of test data, that are still right there in the screenplay's code. 
 
 In a manual test case, we'd refer to a fixed set of test data, which is used in any test case that needs something like a valid social security number or an address.
 
@@ -269,29 +286,53 @@ Our testers would probably know them by heart after a few iterations.
 
 Why don't we make our [Actor] know things by heart as well?
 
-So let's create a new method `knows`, which takes an instance of the new [Fact] interface and stores it in another Set named `facts`. To use facts, we can basically copy the `getAbility` method and adjust it to get `Fact`s and to throw a [MissingFactException] with a reasonable message if a fact in unknown to the actor.
+So let's create a new interface [Fact] and a new method `knows` taking an instance and store it in a Map of `facts`.
 
-As we will mainly use the `knows` method in our [BaseScreenplay]'s `setupActor` method –just like `can`–, we should also return the actor instance.
+// Create `Fact` interface, `Actor.knows(String, Fact)` method and the `facts` field as a `Map<String, Fact>`
+
+The key of the `facts` Map will be an abstract name, we can distinguish between two facts of the same type. For example bank accounts or telephone numbers.
+
+To get a stored fact, we crate a new method `getFact`, which either returns the requested fact or throws a [MissingFactException] if `facts` does not contain the requested fact.
+
+// Create `T Actor.getFact(String, T)`
+
+As we will mainly use the `knows` method in our [BaseScreenplay]'s setup methods, we should also return the actor instance.
 
 Now we can create some facts. Let's start with the actor's [Credentials] as they are used in both existing screenplays.
 
 So we implement the [Fact] interface and add one String field for the user name and one for the password plus the corresponding getter methods. We also add the usual static method to create an instance of [Credentials].
 
+// Implement `Credentials` `Fact`
+// Generate `equals`, `hashCode` and `toString`
+// Add `knows(credentials(username, password)` to the [BaseScreenplay]
+
 After the actor knows their credentials, now we can remove the username and password fields from the [Login] task. Instead, we can now call `getFact` on the performing actor instance to get the required facts.
+
+// Inline username and password, use `getFact` in Login
 
 Let's run [LoginScreenplay] again to check, if it still works the way it should.
 
+// Run `LoginScreenplay`
+
+Nice.
+
+Since the actor itself can now contain knowledge, reduce the `performAs` parameters to just the [Actor] instance.
+
 Let's improve this a bit further by putting our magically working user name and password into a new static method `defaultCredentials`, which does not take any parameters.
+
+// Add `defaultCredentials` and move username and password from `BaseScreenplay` to `Credentials` class. 
 
 These default test data methods make using [Fact]s very convenient. It reduces the risk of fact duplications among our tests, since we can get the magic default values from anywhere, and if they change for some reason, we can also update them in exactly one place.
 
 As another homework exercise, try to use [Fact]s in your [RegisterScreenplay].
 
-### Part 5: Learning Facts by performing Tasks
+### Part 6: Learning Facts by performing Tasks
 
 Welcome back to part 5.
 
 Let's have a short look into the revised [RegisterScreenplay].
+
+// Open `RegisterScreenplay`
 
 I added a lot of more implementations of the Fact interface:
 - [FullName],
@@ -299,19 +340,33 @@ I added a lot of more implementations of the Fact interface:
 - [PhoneNumber],
 - [Ssn]
 
+// Scroll through facts package
+
 I also added a new static method to [Credentials], which generates a random username, so we don't fail the test due to an already taken username.
+
+// Show `uniqueCredentials` method
 
 So facts do not only provide use with a way to store static default test data, but can also be used to hold logic to generate dynamic test data!
 
 Now let's have a look at [OpenNewAccountTest].
 
+// Open `OpenNewAccountTest`
+
 As you can see, the test is using three pages: [OpenNewAccountPage] is used to actually open the new account, but then the [AccountsOverviewPage] is needed to verify that the account using the new account ID from the [AccountOpenedPage].
+
+// Highlight `newAccountId` variable
 
 So let's create our [OpenNewAccountScreenplay], in which we will first need perform [OpenNewAccount] task.
 
+// Create `OpenNewAccountScreenplay` and implement `OpenNewAccount` `Task`
+
 Most of the code can be copied from [OpenNewAccountPage] and [AccountOpenedPage]. Note that this includes the waiting code from the constructors, which is needed since the pages are not intractable immediately.
 
+// Implement `performAs` with code from `OpenNewAccountPage` and `AccountOpenedPage`
+
 Let's check if our new task works as expected.
+
+// Use `OpenNewAccount` in `OpenNewAccountScreenplay` and execute it
 
 So we created a new account, now we need to verify it on the [AccountsOverviewPage] and in order to do that, we need the new account's ID, which was displayed on the [AccountOpenedPage].
 
@@ -319,7 +374,11 @@ Since [Task]s' `performAs` method does not return anything, we cannot just recor
 
 Well after all, the new account's ID is simply a new fact. One that was not known before the test started, but a fact after all. So why don't we just use the `knows` method of our [Actor] to _learn_ the new fact, while we perform a task.
 
+// Navigate to `OpenNewAccount.performAs`, add a `knows` call to store the account ID (let Idea create the class)
+
 Let's add an assertion to make sure the actor has learned the ID after performing the task.
+
+// Add `assertThat(user.getFact("new account ID"))).isNotNull()`
 
 Now we can add the new [AccountBalance] question to verify the initial balance of our account.
 
