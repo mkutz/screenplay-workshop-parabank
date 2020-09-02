@@ -17,21 +17,31 @@ public class AccountsOverviewPage extends Page {
 
     public AccountsOverviewPage(WebDriver webDriver) {
         super(webDriver);
+
         new WebDriverWait(webDriver, 5)
                 .until(visibilityOfAllElementsLocatedBy(accountRows));
     }
 
     public int getAccountBalanceInCents(int index) {
-        return dollarStringToCents(webDriver.findElements(accountRows).get(index).findElement(balanceCell).getText());
+        return dollarStringToCents(
+                webDriver.findElements(accountRows)
+                        .get(index)
+                        .findElement(balanceCell)
+                        .getText()
+        );
     }
 
     public int getAccountBalanceInCents(String accountId) {
         return webDriver.findElements(accountRows).stream()
-                .filter(accountRow -> accountId.equals(accountRow.findElement(accountIdCell).getText()))
+                .filter(accountRow -> accountId.equals(
+                        accountRow.findElement(accountIdCell).getText())
+                )
                 .findAny()
                 .map(accountRow -> accountRow.findElement(balanceCell).getText())
                 .map(AccountsOverviewPage::dollarStringToCents)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Account %s not in account overview", accountId)));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Account %s not in account overview", accountId)
+                ));
     }
 
     private static int dollarStringToCents(String dollarString) {
