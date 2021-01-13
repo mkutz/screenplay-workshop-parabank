@@ -62,17 +62,15 @@ Let's checkout the code and take a look into some typical Page Objects.
 
 The [RegisterPage] for example contains a lot of locators, and also several methods for filling all the fields on it.
 
+// Show the page
+
 // Switch to [AccountsOverviewPage]
 
 The [AccountsOverviewPage] is even more complex.
 
-`getAccountIdsList` extracts all account IDs from the table.
+`getAccountBalanceInCents` gets the balance of a single account as an integer of cents identified by index or ID.
 
-// Highlight `getAccountIdsList`
-
-`getAccountBalanceInCents` gets the balance of a single account as an integer of cents.
-
-// Highlight `getAccountBalanceInCents`
+// Highlight `getAccountBalanceInCents`' versions
 
 Such methods make verifications much easier to read, compared to using such code in tests directly.
 
@@ -122,7 +120,22 @@ When one developer/tester changes the code to optimize for the task at hand, the
 
 As Screenplays use one class per task, that an Actor can perform, these classes usually stay rather small and can be optimized for the one use case only.
 
+#### Questions
+
+- Page Objects typically hold
+  -[ ] Locators and interaction code for one specific page
+  -[ ] Implementations of use cases
+  -[ ] All HTML elements of a page
+- What is not a problem when using Page Objects
+  -[ ] Page Objects can grow quite big
+  -[ ] Use cases spanning multiple pages need to be split
+  -[ ] They make tests slow
+
 ### Part 2: Actors and Abilities
+
+Welcome to part 2.
+
+So, now that we had a look into the disadvantages of Page Objects, let's see how Screenplay can improve our tests.
 
 The central object in a screenplay is an __actor__.
 
@@ -204,7 +217,6 @@ Reading the setup line now is still a bit strange due to the `new` keyword. We c
 // Add the static initializer for `BrowseTheWeb`, use it
 
 We now have the basic setup for a screenplay. In the next part we'll transform our first test to the new structure.
-
 
 #### Questions
 
