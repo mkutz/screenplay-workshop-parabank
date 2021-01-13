@@ -4,9 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 
 public class AccountsOverviewPage extends Page {
@@ -17,14 +14,12 @@ public class AccountsOverviewPage extends Page {
 
     public AccountsOverviewPage(WebDriver webDriver) {
         super(webDriver);
-
-        new WebDriverWait(webDriver, 5)
-                .until(visibilityOfAllElementsLocatedBy(accountRows));
     }
 
     public int getAccountBalanceInCents(int index) {
         return dollarStringToCents(
-                webDriver.findElements(accountRows)
+                new WebDriverWait(webDriver, 5)
+                        .until(visibilityOfAllElementsLocatedBy(accountRows))
                         .get(index)
                         .findElement(balanceCell)
                         .getText()
@@ -32,16 +27,15 @@ public class AccountsOverviewPage extends Page {
     }
 
     public int getAccountBalanceInCents(String accountId) {
-        return webDriver.findElements(accountRows).stream()
-                .filter(accountRow -> accountId.equals(
-                        accountRow.findElement(accountIdCell).getText())
-                )
+        return new WebDriverWait(webDriver, 5)
+                .until(visibilityOfAllElementsLocatedBy(accountRows))
+                .stream()
+                .filter(accountRow -> accountId.equals(accountRow.findElement(accountIdCell).getText()))
                 .findAny()
                 .map(accountRow -> accountRow.findElement(balanceCell).getText())
                 .map(AccountsOverviewPage::dollarStringToCents)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("Account %s not in account overview", accountId)
-                ));
+                        String.format("Account %s not in account overview", accountId)));
     }
 
     private static int dollarStringToCents(String dollarString) {
