@@ -6,7 +6,7 @@
 
 ### Part 0: Introduction
 
-// Presentation at <https://slides.com/mkutz/screenplay-design-pattern-course>
+→ Presentation at <https://slides.com/mkutz/screenplay-design-pattern-course>
 
 Hello and welcome to this course about the screenplay design pattern.
 
@@ -14,13 +14,20 @@ My name is Michael Kutz, and I'll be your instructor.
 
 In this course we will work with an existing test suite written in Java using the Page Object pattern.
 
-In order to follow, you will need a Java Development Kit of version 11 or higher, an IDE like IntelliJ IDEA, and the code that you can find on the GitHub URL below this video.
+In order to follow my steps, you will need three things on your computer:
+- a Java Development Kit of version 11 or higher, 
+- an IDE like IntelliJ IDEA, which is the one I'll use throughout the course,
+- and the code that you can find on the GitHub URL below this video.
 
-First, we will analyse what the shortcomings of Page Objects followed by a brief introduction of the basic principles of Screenplay.
+First, we will analyse what the shortcomings of Page Objects are,
+followed by a brief introduction of the basic principles of Screenplay.
 
-After that we will one-by-one introduce the concepts of the Screenplay design pattern and recreate the tests using them.
-
-Finally, I will give you a brief overview on the Serenity framework, which uses screenplay as its main pattern and combines it with powerful reporting.
+After that we will one-by-one introduce the concepts of the Screenplay design pattern and recreate the tests using them
+- Staring with Actors and Abilities,
+- followed by performing Tasks
+- and answering Questions.
+- After these we'll explore Facts, which are an extension to the original/pure Screenplay.
+- In the last part, we'll compare the original Page Objects implementation with the Screenplay one and see the advantages or disadvantages of the two approaches.
 
 So, at the end of the course you will have clear understanding about
 - What is the screenplay pattern is
@@ -34,7 +41,7 @@ If you're not familiar with Selenium in Java, or the page object pattern, I high
 
 Welcome back to part 1.
 
-// Presentation at https://slides.com/mkutz/screenplay-design-pattern-course Page Objects and Screenplay
+→ Presentation at https://slides.com/mkutz/screenplay-design-pattern-course Page Objects and Screenplay
 
 Let's have quick look into Page Objects.
 
@@ -57,25 +64,29 @@ The [RegisterPage] for example contains a lot of locators, and also several meth
 
 // Switch to [AccountsOverviewPage]
 
-The [AccountsOverviewPage] is even more complex, as its constructor contains some waiting code, to prevent interacting with the page before it is ready.
-
-// Highlight constructor waiting code
-
-It also contains the methods to extract information.
-
-// Highlight `getAccountIdsList`
+The [AccountsOverviewPage] is even more complex.
 
 `getAccountIdsList` extracts all account IDs from the table.
 
+// Highlight `getAccountIdsList`
+
+`getAccountBalanceInCents` gets the balance of a single account as an integer of cents.
+
 // Highlight `getAccountBalanceInCents`
 
-`getAccountBalanceInCents` gets the balance of a single account as an integer of cents. Such methods make verifications much easier to read, compared to using such code in tests directly.
+Such methods make verifications much easier to read, compared to using such code in tests directly.
 
 // Switch to [TransferFundsTest] and highlight use of `getAccountBalanceInCents`
+
+As the account rows are not initially visible but loaded dynamically, its methods rely on some `WebDriverWait`s to avoid false return values due to premature reading.
+
+// Highlight waiting code in the methods
 
 However, page objects' methods are typically limited to simple _interactions_ on a _single_ page.
 
 This is perfectly OK for simple tests, like a [LoginTest], which is in fact limited to the home page only.
+
+// Switch to [LoginTest]
 
 In more complex scenarios, we end up with a lot of fine-grained steps, and it can become hard to gasp what the test's purpose is. An example in this test suite would be the [TransferFundsTest].
 
@@ -99,19 +110,23 @@ Let's read the code:
 > Then the user sees that the first account's balance is decreased by the amount\
 > And the second account's balance increased by the amount.
 
-Quite a lot of boring code that makes it hard to see what the test is actually about.
+Quite a lot of boring code that makes it hard to see what the test is actually about. But, as the opening of a new account spans several pages, we cannot put open a new account into one line.
 
-Screenplay gives us a representation of the user and of tasks, wich will clear a lot of the noise code away.
+Of course, we could just rely on a prepared account, which already possesses two accounts with a fixed balance, but that required some tight test data management, which –in my experience– ultimately fails. Setting the stage using API calls would also be a brilliant idea, but let's assume we cannot do that right now.
 
-Another problem with Page Objects is that they can turn into very large classes, that become hard to maintain as they are used by a lot of tests.
+Screenplay gives us a representation of the user and of tasks, which can span as many pages as needed. In part 2, you'll see how this clears a lot of the noisy code away.
 
-As Screenplays use one class per task, that an Actor can perform, these classes usually stay rather small and can be optimized for the one use case only. For example waiting on required content only, 
+Another problem with Page Objects is that they can turn into very large classes, that become hard to maintain as they are used by a lot of tests. Selectors and interaction code will be added for quite special test cases, which are meant to be exclusively used in those.
+
+When one developer/tester changes the code to optimize for the task at hand, they might break another test, they forgot about. This ultimately discourages refactorings and the code base becomes unmaintainable.
+
+As Screenplays use one class per task, that an Actor can perform, these classes usually stay rather small and can be optimized for the one use case only.
 
 ### Part 2: Actors and Abilities
 
 The central object in a screenplay is an __actor__.
 
-The Actor can _have_ __abilities__. For example browsing the web, using an app, gather information via an API, read their email and so on.
+The Actor can have __abilities__. For example browsing the web, using an app, gather information via an API, read their email and so on.
 
 These abilities enable the actor to _perform_ __tasks__, like login, transfer funds or open a new account.
 
