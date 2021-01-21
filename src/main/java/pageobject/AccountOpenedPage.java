@@ -9,23 +9,23 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClick
 
 public class AccountOpenedPage extends Page {
 
-    private static final By newAccountLink = By.id("newAccountId");
+  private static final By newAccountLink = By.id("newAccountId");
 
 
-    public AccountOpenedPage(WebDriver webDriver) {
-        super(webDriver);
-        new WebDriverWait(webDriver, 3)
-                .ignoring(NoSuchElementException.class)
-                .until(elementToBeClickable(newAccountLink));
-    }
+  public AccountOpenedPage(WebDriver webDriver) {
+    super(webDriver);
+    new WebDriverWait(webDriver, 3)
+        .ignoring(NoSuchElementException.class)
+        .until(elementToBeClickable(newAccountLink));
+  }
 
 
-    public AccountDetailsPage goToNewAccount() {
-        webDriver.findElement(newAccountLink).click();
-        return new AccountDetailsPage(webDriver);
-    }
+  public AccountDetailsPage goToNewAccount() {
+    webDriver.findElement(newAccountLink).click();
+    return new AccountDetailsPage(webDriver);
+  }
 
-    public String getNewAccountId() {
-        return webDriver.findElement(newAccountLink).getText();
-    }
+  public String getNewAccountId() {
+    return webDriver.findElement(newAccountLink).getText();
+  }
 }

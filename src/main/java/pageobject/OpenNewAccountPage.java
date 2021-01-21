@@ -10,30 +10,35 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.not;
 
 public class OpenNewAccountPage extends Page {
 
-    private static final By accountTypeSelect = By.id("type");
-    private static final By fromAccountIdSelect = By.id("fromAccountId");
-    private static final By openNewAccountButton = By.cssSelector("input.button");
+  private static final By accountTypeSelect =
+      By.id("type");
+  private static final By fromAccountIdSelect =
+      By.id("fromAccountId");
+  private static final By openNewAccountButton =
+      By.cssSelector("input.button");
 
 
-    public OpenNewAccountPage(WebDriver webDriver) {
-        super(webDriver);
-        new WebDriverWait(webDriver, 3)
-                .until(not(attributeContains(fromAccountIdSelect, "class", "ng-empty")));
-    }
+  public OpenNewAccountPage(WebDriver webDriver) {
+    super(webDriver);
+    new WebDriverWait(webDriver, 3)
+        .until(not(attributeContains(fromAccountIdSelect, "class", "ng-empty")));
+  }
 
 
-    public void selectAccountType(int index) {
-        new Select(webDriver.findElement(accountTypeSelect)).selectByIndex(index);
-    }
+  public void selectAccountType(int index) {
+    new Select(webDriver.findElement(accountTypeSelect))
+        .selectByIndex(index);
+  }
 
-    public void selectFromAccountId(int index) {
-        new Select(webDriver.findElement(fromAccountIdSelect)).selectByIndex(index);
-    }
+  public void selectFromAccountId(int index) {
+    new Select(webDriver.findElement(fromAccountIdSelect))
+        .selectByIndex(index);
+  }
 
-    public AccountOpenedPage openAccount() {
-        selectAccountType(0);
-        selectFromAccountId(0);
-        webDriver.findElement(openNewAccountButton).click();
-        return new AccountOpenedPage(webDriver);
-    }
+  public AccountOpenedPage openAccount() {
+    selectAccountType(0);
+    selectFromAccountId(0);
+    webDriver.findElement(openNewAccountButton).click();
+    return new AccountOpenedPage(webDriver);
+  }
 }

@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest extends BaseTest {
 
-    @Test
-    public void canLogin() {
-        homePage.login(testUsername, testPassword);
+  @Test
+  public void canLogin() {
+    homePage.login(testUsername, testPassword);
 
-        assertTrue(homePage.isLoggedIn());
-    }
+    assertTrue(homePage.isLoggedIn());
+  }
 }
