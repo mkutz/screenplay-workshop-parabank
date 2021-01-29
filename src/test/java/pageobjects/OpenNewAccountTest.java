@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class OpenNewAccountTest extends BaseTest {
 
+  static int INITIAL_ACCOUNT_BALANCE = 1500;
+
   @BeforeEach
   public void ensureLogin() {
     homePage.login(testUsername, testPassword);
@@ -25,7 +27,7 @@ public class OpenNewAccountTest extends BaseTest {
 
     assertEquals(
         accountsOverviewPage.getBalanceInCents(newAccountId),
-        10000
+        INITIAL_ACCOUNT_BALANCE
     );
   }
 }
