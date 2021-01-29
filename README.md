@@ -221,10 +221,10 @@ set up and assign an [Actor] instance in only one line.
 
 // Create builder method `can`
 
-To access abilities, we create a method `use` which will return the instance of the requested [Ability] class or throw
+To access abilities, we create a method `uses` which will return the instance of the requested [Ability] class or throw
 a [MissingAbilityException], which should tell us in its message who was not able to do what. So let's create that.
 
-// Implement `use`
+// Implement `uses`
 // Let Idea Create `MissingAbilityException` and implement it
 
 Let's implement that interface and create the [BrowseTheWeb] ability, which simply wraps a WebDriver instance and
@@ -273,32 +273,34 @@ We do want to group these fine-grained actions, so our tests don't get too noisy
 pages –as Page Objects do– we will group them by meaningful __tasks__.
 
 OK, so now we are setup to create our first screenplay: the [LoginScreenplay]. In order to do that, we need the [Actor]
-to be able to perform __tasks__, in this case a login. So let's create another method `perform` in our [Actor] class
+to be able to perform __tasks__, in this case a login. So let's create another method `performs` in our [Actor] class
 which takes an instance of the [Task] interface.
 
 // Add `perform` method, taking a `Task` instance // Let Idea create the `Task` interface
 
-A [Task] can be performed by an [Actor], so we will declare a method `performAs`, which takes an [Actor] instance.
+A [Task] can be performed by an [Actor], so we will declare a method `performedBy`, which takes an [Actor] instance.
 
-// Add `performAs` method to the interface, taking an `Actor` instance
+// Add `performedBy` method to the interface, taking an `Actor` instance
 
 Next we will implement the [Login] task. Obviously a login requires a username and a password, so we add those as fields
-and implement the `performAs` method.
+and implement the `performedBy` method.
 
-// Implement `Task` as `Login` with `performAs` and username and password as fields
+// Implement `Task` as `Login` with `performedBy` and username and password as fields
 
-As the login will happen using a WebDriver, we first need to use the [Actor]'s `use` method to get the [BrowseTheWeb]
+As the login will happen using a WebDriver, we first need to use the [Actor]'s `uses` method to get the [BrowseTheWeb]
 ability and get its WebDriver instance. This may appear complicated, but allows us to combine different [Ability]
 instances to perform complex tasks.
 
-// Call `use` from `performAs`, to assign the WebDriver to a local variable.
+// Call `uses` from `proformedBy`, to assign the WebDriver to a local variable.
 
 The actual login code can be copied from the [HomePage] class' `login` method.
 
 // Copy `login` code form `HomePage`
 
-Note that the task is a value object. It is created once and does never need to change its state. This is what we
-want. [Task]s purely describe the actions needed to be performed.
+Note that the task is a value object.
+It is created once and does never need to change its state.
+This is what we want.
+[Task]s purely describe the actions needed to be performed.
 
 OK, let's execute the test to see if our task performs as expected.
 
@@ -306,7 +308,21 @@ OK, let's execute the test to see if our task performs as expected.
 
 As you can see the browser opens, and the login is happening just like in [LoginTest].
 
+To make the code somewhat nicer, we can again create a static initializer for `loginWith`.
+
+// Create `loginWith` in [Login].
+
 We are still missing an essential part of a test: the verification. This we will address in the next part.
+
+#### Questions
+
+- Task objects…
+  -[ ] …perform an action and change their state in the process.
+  -[ ] …describe the actions that need to be performed by an Actor.
+- How is required data given to a Task?
+  -[ ] As parameters in its `performedBy` method.
+  -[ ] As private final fields.
+  -[ ] In a global util class.
 
 ### Part 4: Answering Questions
 

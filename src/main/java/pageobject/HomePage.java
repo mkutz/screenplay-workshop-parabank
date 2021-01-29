@@ -31,32 +31,48 @@ public class HomePage extends Page {
 
 
   public void login(String username, String password) {
-    webDriver.findElement(usernameInput).sendKeys(username);
-    webDriver.findElement(passwordInput).sendKeys(password);
-    webDriver.findElement(submitButton).click();
+    webDriver
+        .findElement(usernameInput)
+        .sendKeys(username);
+    webDriver
+        .findElement(passwordInput)
+        .sendKeys(password);
+    webDriver
+        .findElement(submitButton)
+        .click();
   }
 
   public boolean isLoggedIn() {
-    return webDriver.findElement(logoutLink).isDisplayed();
+    return webDriver
+        .findElement(logoutLink)
+        .isDisplayed();
   }
 
   public RegisterPage clickRegisterLink() {
-    webDriver.findElement(registerLink).click();
+    webDriver
+        .findElement(registerLink)
+        .click();
     return new RegisterPage(webDriver);
   }
 
   public OpenNewAccountPage clickOpenNewAccountLink() {
-    webDriver.findElement(openNewAccountLink).click();
+    webDriver
+        .findElement(openNewAccountLink)
+        .click();
     return new OpenNewAccountPage(webDriver);
   }
 
   public AccountsOverviewPage clickAccountsOverviewLink() {
-    webDriver.findElement(accountsOverviewLink).click();
+    webDriver
+        .findElement(accountsOverviewLink)
+        .click();
     return new AccountsOverviewPage(webDriver);
   }
 
   public TransferFundsPage clickTransferFundsLink() {
-    webDriver.findElement(transferFundsLink).click();
+    webDriver
+        .findElement(transferFundsLink)
+        .click();
     return new TransferFundsPage(webDriver);
   }
 }

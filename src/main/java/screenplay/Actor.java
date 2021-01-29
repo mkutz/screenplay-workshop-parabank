@@ -17,11 +17,17 @@ public class Actor {
     return this;
   }
 
-  public Ability uses(Class<Ability> abilityClass) {
+  public <A extends Ability> A uses(Class<A> abilityClass) {
     return abilities.stream()
         .filter(ability -> abilityClass.equals(ability.getClass()))
         .findAny()
+        .map(abilityClass::cast)
         .orElseThrow(() -> new MissingAbilityException(this, abilityClass));
+  }
+
+  public Actor performs(Task task) {
+    task.performedBy(this);
+    return this;
   }
 
   @Override
