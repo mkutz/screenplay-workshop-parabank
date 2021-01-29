@@ -435,7 +435,7 @@ As another homework exercise, try to use [Fact]s in your [RegisterScreenplay].
 
 ### Part 6: Learning Facts by performing Tasks
 
-Welcome back to part 5.
+Welcome back to part 6.
 
 Let's have a short look into the revised [RegisterScreenplay].
 
@@ -448,15 +448,13 @@ I added a lot of more implementations of the Fact interface:
 - [PhoneNumber],
 - [Ssn]
 
-// Scroll through facts package
+// Scroll through package
 
-I also added a new static method to [Credentials], which generates a random username, so we don't fail the test due to
-an already taken username.
+I also added a new static method to [Credentials], which generates a random username, so we don't fail the test due to an already taken username.
 
 // Show `uniqueCredentials` method
 
-So facts do not only provide use with a way to store static default test data, but can also be used to hold logic to
-generate dynamic test data!
+So facts do not only provide use with a way to store static default test data, but can also be used to hold logic to generate dynamic test data!
 
 Now let's have a look at [OpenNewAccountTest].
 

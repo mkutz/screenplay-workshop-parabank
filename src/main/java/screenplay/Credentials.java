@@ -2,6 +2,8 @@ package screenplay;
 
 import java.util.Objects;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 public class Credentials implements Fact {
 
   private static final Credentials DEFAULT_CREDENTIALS =
@@ -21,6 +23,10 @@ public class Credentials implements Fact {
 
   public static Credentials defaultCredentials() {
     return DEFAULT_CREDENTIALS;
+  }
+
+  public static Credentials uniqueCredentials() {
+    return new Credentials(randomAlphabetic(12), "Sup3rS3cr3t!");
   }
 
   public String getUsername() {

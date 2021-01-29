@@ -4,37 +4,8 @@ import org.openqa.selenium.By;
 
 public class Registration implements Task {
 
-  private final String firstName;
-  private final String lastName;
-  private final String street;
-  private final String city;
-  private final String state;
-  private final String zipCode;
-  private final String phoneNumber;
-  private final String ssn;
-  private final String username;
-  private final String password;
-
-  private Registration(
-      String firstName, String lastName,
-      String street, String city,
-      String state, String zipCode,
-      String phoneNumber, String ssn,
-      String username, String password) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.street = street;
-    this.city = city;
-    this.state = state;
-    this.zipCode = zipCode;
-    this.phoneNumber = phoneNumber;
-    this.ssn = ssn;
-    this.username = username;
-    this.password = password;
-  }
-
-  public static Builder registration() {
-    return new Builder();
+  public static Registration registration() {
+    return new Registration();
   }
 
   @Override
@@ -46,97 +17,51 @@ public class Registration implements Task {
         .findElement(By.linkText("Register"))
         .click();
 
+    final var fullName = actor.remembers(FullName.class);
     webDriver
         .findElement(By.id("customer.firstName"))
-        .sendKeys(firstName);
+        .sendKeys(fullName.getFirstName());
     webDriver
         .findElement(By.id("customer.lastName"))
-        .sendKeys(lastName);
+        .sendKeys(fullName.getLastName());
+
+    final var address = actor.remembers(Address.class);
     webDriver
         .findElement(By.id("customer.address.street"))
-        .sendKeys(street);
+        .sendKeys(address.getStreet());
     webDriver
         .findElement(By.id("customer.address.city"))
-        .sendKeys(city);
+        .sendKeys(address.getCity());
     webDriver
         .findElement(By.id("customer.address.state"))
-        .sendKeys(state);
+        .sendKeys(address.getState());
     webDriver
         .findElement(By.id("customer.address.zipCode"))
-        .sendKeys(zipCode);
+        .sendKeys(address.getZipCode());
+
+    final var phoneNumber = actor.remembers(PhoneNumber.class);
     webDriver
         .findElement(By.id("customer.phoneNumber"))
-        .sendKeys(phoneNumber);
+        .sendKeys(phoneNumber.getPhoneNumber());
+
+    final var ssn = actor.remembers(Ssn.class);
     webDriver
         .findElement(By.id("customer.ssn"))
-        .sendKeys(ssn);
+        .sendKeys(ssn.getSsn());
+
+    final var credentials = actor.remembers(Credentials.class);
     webDriver
         .findElement(By.id("customer.username"))
-        .sendKeys(username);
+        .sendKeys(credentials.getUsername());
     webDriver
         .findElement(By.id("customer.password"))
-        .sendKeys(password);
+        .sendKeys(credentials.getPassword());
     webDriver
         .findElement(By.id("repeatedPassword"))
-        .sendKeys(password);
+        .sendKeys(credentials.getPassword());
+
     webDriver
         .findElement(By.cssSelector("#customerForm input.button"))
         .click();
-  }
-
-  public static final class Builder {
-    private String firstName;
-    private String lastName;
-    private String street;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String phoneNumber;
-    private String ssn;
-    private String username;
-    private String password;
-
-    public static Builder aRegistration() {
-      return new Builder();
-    }
-
-    public Builder withFullName(
-        String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      return this;
-    }
-
-    public Builder withAddress(
-        String street, String city,
-        String state, String zipCode) {
-      this.street = street;
-      this.city = city;
-      this.state = state;
-      this.zipCode = zipCode;
-      return this;
-    }
-
-    public Builder withPhoneNumber(String phoneNumber) {
-      this.phoneNumber = phoneNumber;
-      return this;
-    }
-
-    public Builder withSsn(String ssn) {
-      this.ssn = ssn;
-      return this;
-    }
-
-    public Builder withCredentials(
-        String username, String password) {
-      this.username = username;
-      this.password = password;
-      return this;
-    }
-
-    public Registration build() {
-      return new Registration(firstName, lastName, street, city,
-          state, zipCode, phoneNumber, ssn, username, password);
-    }
   }
 }

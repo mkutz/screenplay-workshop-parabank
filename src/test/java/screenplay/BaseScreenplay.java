@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static screenplay.BrowseTheWeb.browseTheWebWith;
-import static screenplay.Credentials.defaultCredentials;
 
 abstract public class BaseScreenplay {
 
@@ -26,8 +25,7 @@ abstract public class BaseScreenplay {
     webDriver.manage().deleteAllCookies();
     webDriver.get("http://parabank.parasoft.com/");
     user = new Actor("John")
-        .can(browseTheWebWith(webDriver))
-        .learns(defaultCredentials());
+        .can(browseTheWebWith(webDriver));
   }
 
   @AfterAll
