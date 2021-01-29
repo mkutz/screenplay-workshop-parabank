@@ -398,19 +398,18 @@ a [MissingFactException] if `facts` does not contain the requested fact.
 
 // Create `T Actor.remembers(T)`
 
-As we will mainly use the `learns` method in our [BaseScreenplay]'s setup methods, we should also return the actor
-instance to be able to chain the calls.
+As we will mainly use the `learns` method in our [BaseScreenplay]'s setup methods, we should also return the actor instance to be able to chain the calls.
 
 // Make learns return the Actor
 
 Now we can create some facts. Let's start with the actor's [Credentials] as they are used in both existing screenplays.
 
-So we implement the [Fact] interface and add one String field for the username and one for the password plus the
-corresponding getter methods. We also add the usual static method to create an instance of [Credentials].
+So we implement the [Fact] interface and add one String field for the username and one for the password plus the corresponding getter methods.
+We also add the usual static method to create an instance of [Credentials].
 
 // Implement `Credentials` `Fact`
 // Generate `equals`, `hashCode` and `toString`
-// Add `learns(credentials(username, password)` to the [BaseScreenplay]
+// Add `learns(credentials(username, password))` to the [BaseScreenplay]
 
 After the actor knows their credentials, now we can remove the username and password fields from the [Login] task.
 Instead, we can now call `getFact` on the performing actor instance to get the required facts.
@@ -428,9 +427,9 @@ method `defaultCredentials`, which does not take any parameters.
 
 // Add `defaultCredentials` and move username and password from `BaseScreenplay` to `Credentials` class.
 
-These default test data methods make using [Fact]s very convenient. It reduces the risk of fact duplications among our
-tests, since we can get the magic default values from anywhere, and if they change for some reason, we can also update
-them in exactly one place.
+These default test data methods make using [Fact]s very convenient.
+It reduces the risk of fact duplications among our tests, since we can get the magic default values from anywhere.
+If they change for some reason, we can also update them in exactly one place.
 
 As another homework exercise, try to use [Fact]s in your [RegisterScreenplay].
 

@@ -8,13 +8,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static screenplay.BrowseTheWeb.browseTheWebWith;
+import static screenplay.Credentials.defaultCredentials;
 
 abstract public class BaseScreenplay {
 
   private static WebDriver webDriver;
   protected Actor user;
-  protected String testUsername = "john";
-  protected String testPassword = "demo";
 
   @BeforeAll
   static void setUpWebDriver() {
@@ -26,7 +25,9 @@ abstract public class BaseScreenplay {
   public void reset() {
     webDriver.manage().deleteAllCookies();
     webDriver.get("http://parabank.parasoft.com/");
-    user = new Actor("John").can(browseTheWebWith(webDriver));
+    user = new Actor("John")
+        .can(browseTheWebWith(webDriver))
+        .learns(defaultCredentials());
   }
 
   @AfterAll
