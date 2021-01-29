@@ -332,23 +332,22 @@ Welcome to part 4.
 
 To finish our first screenplay, we need to answer the __question__ if our login was successful.
 
-So let's create another method in our [Actor] `checks` which takes an instance of the new [Question] interface.
+So let's create another method in our [Actor] `answers` which takes an instance of the new [Question] interface.
 
-// Create `Actor.checks(Question)` in Actor
+Unlike a [Task] a [Question] should return us an answer.
+In case of our first [Question] "is the user logged in?", that answer is either yes or no.
+So the type of the answer is `Boolean`, but there will be Questions with other types of answers.
+Hence, we should use a generic return type.
 
-Similar to a [Task] being performed by an [Actor], a [Question] must be answered by one. So we create a
-method `answeredBy` taking an [Actor] as argument.
+// Create `<A> A answers(Question<A>)` in Actor
+// Let Idea create the `Question<A>` interface
 
-// Add `answeredBy(Actor)` to the `Question` interface
+Similar to a [Task] being performed by an [Actor], a [Question] must be __answered by__ one.
+So we create a method `answeredBy` taking an [Actor] as argument.
 
-Unlike a [Task] a Question should return us an answer. In case of our first Question "is the user logged in?", that
-answer is either yes or no. So the type of the answer is `Boolean`, but there will be Questions with other types of
-answers, so let's use Java generics to make the return type of `answeredBy` and `checks` whatever the question requires.
+// Add `A answeredBy(Actor)` to the `Question` interface
 
-// Make `answeredBy` and `checks` return a generic type
-
-To implement our first [Question] "[LoggedIn]", we again need to use the actor's [BrowseTheWeb] ability and extract the
-WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
+To implement our first [Question] "[LoggedIn]", we again need to use the actor's [BrowseTheWeb] ability and extract the WebDriver, then we can copy the code from the [HomePage]'s `isLoggedIn` method.
 
 // Implement `LoggedIn` and add code `HomePage.isLoggedIn` to its `answeredBy` method
 

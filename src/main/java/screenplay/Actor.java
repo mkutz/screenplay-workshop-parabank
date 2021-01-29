@@ -30,6 +30,10 @@ public class Actor {
     return this;
   }
 
+  public <A> A answers(Question<A> question) {
+    return question.answeredBy(this);
+  }
+
   @Override
   public String toString() {
     return this.name;
