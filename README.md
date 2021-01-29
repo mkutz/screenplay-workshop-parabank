@@ -355,8 +355,7 @@ To make the code more readable, we will again add a static method to create an i
 
 // Add static initializer `loggedIn` for `LoggedIn`
 
-Now let's go back to the [LoginScreenplay] and ask the actor if they `seesThat` they are `loggedIn` to verify the effect
-in our test.
+Now let's go back to the [LoginScreenplay] and ask the actor if they `seesThat` they are `loggedIn` to verify the effect in our test.
 
 // Add `user.checks(loggedIn)` to `LoginScreenplay`
 
@@ -374,12 +373,13 @@ I hope you were able to create [RegisterScreenplay].
 
 Let's have a look into my version of it.
 
-// Open `RegisterScreenplay`
+// Open [RegisterScreenplay]
 
-As you can see the new [Register] task requires a lot of test data, that are still right there in the screenplay's code.
+As you can see I've applied a builder pattern to group the various strings required for the [Register] task into logical units, like address or full name.
 
-In a manual test case, we'd refer to a fixed set of test data, which is used in any test case that needs something like
-a valid social security number or an address.
+Still, this requires a lot of test data, that are still right there in the screenplay's code.
+
+In a manual test case, we'd refer to a fixed set of test data, which is used in any test case that needs something like a valid social security number or an address.
 
 Our testers would probably know them by heart after a few iterations.
 

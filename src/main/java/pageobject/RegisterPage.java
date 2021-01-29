@@ -35,33 +35,57 @@ public class RegisterPage extends Page {
   }
 
   public void inputName(String firstName, String lastName) {
-    webDriver.findElement(firstNameInput).sendKeys(firstName);
-    webDriver.findElement(lastNameInput).sendKeys(lastName);
+    webDriver
+        .findElement(firstNameInput)
+        .sendKeys(firstName);
+    webDriver
+        .findElement(lastNameInput)
+        .sendKeys(lastName);
   }
 
   public void inputAddress(String street, String city,
                            String state, String zipCode) {
-    webDriver.findElement(addressStreetInput).sendKeys(street);
-    webDriver.findElement(addressCityInput).sendKeys(city);
-    webDriver.findElement(addressStateInput).sendKeys(state);
-    webDriver.findElement(addressZipCodeInput).sendKeys(zipCode);
+    webDriver
+        .findElement(addressStreetInput)
+        .sendKeys(street);
+    webDriver
+        .findElement(addressCityInput)
+        .sendKeys(city);
+    webDriver
+        .findElement(addressStateInput)
+        .sendKeys(state);
+    webDriver
+        .findElement(addressZipCodeInput)
+        .sendKeys(zipCode);
   }
 
   public void inputPhoneNumber(String phoneNumber) {
-    webDriver.findElement(phoneNumberInput).sendKeys(phoneNumber);
+    webDriver
+        .findElement(phoneNumberInput)
+        .sendKeys(phoneNumber);
   }
 
   public void inputSsn(String ssn) {
-    webDriver.findElement(ssnInput).sendKeys(ssn);
+    webDriver
+        .findElement(ssnInput)
+        .sendKeys(ssn);
   }
 
   public void inputCredentials(String username, String password) {
-    webDriver.findElement(usernameInput).sendKeys(username);
-    webDriver.findElement(passwordInput).sendKeys(password);
-    webDriver.findElement(passwordRepeatInput).sendKeys(password);
+    webDriver
+        .findElement(usernameInput)
+        .sendKeys(username);
+    webDriver
+        .findElement(passwordInput)
+        .sendKeys(password);
+    webDriver
+        .findElement(passwordRepeatInput)
+        .sendKeys(password);
   }
 
   public void submit() {
-    webDriver.findElement(submitButton).click();
+    webDriver
+        .findElement(submitButton)
+        .click();
   }
 }
