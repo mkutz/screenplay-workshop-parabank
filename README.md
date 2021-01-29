@@ -206,8 +206,8 @@ We could now simply give the WebDriver to the Actor and start adding methods, li
 founds to the [Actor] class. This would be pretty straight forward. Our tests would gain some readability. We could put
 knowledge and state into fields of our actor instance.
 
-However, we would end up with a class even larger than our largest page objects as this class would be a collection of _
-all_ use cases of our application!
+However, we would end up with a class even larger than our largest page objects as this class would be a collection of
+_all_ use cases of our application!
 
 To avoid that, the screenplay pattern breaks everything down into generic interfaces for the [Actor] to work with.
 
@@ -252,9 +252,13 @@ We now have the basic setup for a screenplay. In the next part we'll transform o
 #### Questions
 
 - Why don't we just give the WebDriver to the Actor and implement tasks using methods?
-    -[ ] Because that's not possible
-    -[ ] The actor class would then contain all the use cases of the application and become really huge
-    -[ ] There's no reason
+  -[ ] Because that's not possible
+  -[ ] The actor class would then contain all the use cases of the application and become really huge
+  -[ ] There's no reason
+- We use static initializers for our first ability to…
+  -[ ] …improve performance.
+  -[ ] …prevent NullPointerExceptions.
+  -[ ] …make the code more readable.
 
 ### Part 3: Performing Tasks
 
