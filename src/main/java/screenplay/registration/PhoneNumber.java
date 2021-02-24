@@ -1,4 +1,6 @@
-package screenplay;
+package screenplay.registration;
+
+import screenplay.Fact;
 
 import java.util.Objects;
 

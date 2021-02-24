@@ -1,6 +1,10 @@
-package screenplay;
+package screenplay.registration;
 
 import org.openqa.selenium.By;
+import screenplay.Actor;
+import screenplay.BrowseTheWeb;
+import screenplay.Task;
+import screenplay.login.Credentials;
 
 public class Registration implements Task {
 

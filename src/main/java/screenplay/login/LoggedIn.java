@@ -1,6 +1,9 @@
-package screenplay;
+package screenplay.login;
 
 import org.openqa.selenium.By;
+import screenplay.Actor;
+import screenplay.BrowseTheWeb;
+import screenplay.Question;
 
 public class LoggedIn implements Question<Boolean> {
 

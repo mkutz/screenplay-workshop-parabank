@@ -1,51 +1,57 @@
 package screenplay;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class Actor {
 
+  private static final Logger log =
+      LoggerFactory.getLogger(Actor.class);
   private final String name;
-  private final Set<Ability> abilities = new HashSet<>();
-  private Set<Fact> facts = new HashSet<>();
+  private final Map<Class<? extends Ability>, Ability> abilities;
+  private final Map<Class<? extends Fact>, Fact> facts;
 
   public Actor(String name) {
     this.name = name;
+    this.abilities = new HashMap<>();
+    this.facts = new HashMap<>();
   }
 
   public Actor can(Ability ability) {
-    abilities.add(ability);
+    abilities.put(ability.getClass(), ability);
+    log.info(this + " can " + ability);
     return this;
   }
 
   public <A extends Ability> A uses(Class<A> abilityClass) {
-    return abilities.stream()
-        .filter(ability -> abilityClass.equals(ability.getClass()))
-        .findAny()
+    log.info(this + " uses ability to " + abilityClass);
+    return Optional.of(abilities.get(abilityClass))
         .map(abilityClass::cast)
         .orElseThrow(() ->
             new MissingAbilityException(this, abilityClass)
         );
   }
 
-  public Actor performs(Task task) {
+  public Actor does(Task task) {
     task.performedBy(this);
     return this;
   }
 
-  public <A> A answers(Question<A> question) {
+  public <A> A checks(Question<A> question) {
     return question.answeredBy(this);
   }
 
   public Actor learns(Fact fact) {
-    this.facts.add(fact);
+    this.facts.put(fact.getClass(), fact);
     return this;
   }
 
   public <F extends Fact> F remembers(Class<F> factClass) {
-    return facts.stream()
-        .filter(ability -> factClass.equals(ability.getClass()))
-        .findAny()
+    return Optional.of(facts.get(factClass))
         .map(factClass::cast)
         .orElseThrow(() ->
             new MissingFactException(this, factClass)

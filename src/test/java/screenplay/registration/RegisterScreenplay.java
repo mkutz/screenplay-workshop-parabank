@@ -1,11 +1,13 @@
-package screenplay;
+package screenplay.registration;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import screenplay.BaseScreenplay;
+import screenplay.login.Credentials;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static screenplay.LoggedIn.areYouLoggedIn;
-import static screenplay.Registration.registration;
+import static screenplay.login.LoggedIn.areYouLoggedIn;
+import static screenplay.registration.Registration.registration;
 
 public class RegisterScreenplay extends BaseScreenplay {
 
@@ -21,8 +23,8 @@ public class RegisterScreenplay extends BaseScreenplay {
 
   @Test
   void canRegister() {
-    user.performs(registration());
+    user.does(registration());
 
-    assertTrue(user.answers(areYouLoggedIn()));
+    assertTrue(user.checks(areYouLoggedIn()));
   }
 }

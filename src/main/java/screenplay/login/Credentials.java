@@ -1,4 +1,6 @@
-package screenplay;
+package screenplay.login;
+
+import screenplay.Fact;
 
 import java.util.Objects;
 

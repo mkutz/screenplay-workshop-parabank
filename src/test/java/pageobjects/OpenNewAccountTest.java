@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class OpenNewAccountTest extends BaseTest {
 
-  static int INITIAL_ACCOUNT_BALANCE = 1500;
+  static int INITIAL_ACCOUNT_BALANCE = 10000;
 
   @BeforeEach
   public void ensureLogin() {
@@ -26,8 +26,8 @@ public class OpenNewAccountTest extends BaseTest {
     var accountsOverviewPage = homePage.clickAccountsOverviewLink();
 
     assertEquals(
-        accountsOverviewPage.getBalanceInCents(newAccountId),
-        INITIAL_ACCOUNT_BALANCE
+        INITIAL_ACCOUNT_BALANCE,
+        accountsOverviewPage.getBalanceInCents(newAccountId)
     );
   }
 }

@@ -1,12 +1,12 @@
-package screenplay;
+package screenplay.login;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import screenplay.BaseScreenplay;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static screenplay.Credentials.defaultCredentials;
-import static screenplay.LoggedIn.areYouLoggedIn;
-import static screenplay.Login.login;
+import static screenplay.login.Credentials.defaultCredentials;
+import static screenplay.login.LoggedIn.areYouLoggedIn;
 
 public class LoginScreenplay extends BaseScreenplay {
 
@@ -17,8 +17,8 @@ public class LoginScreenplay extends BaseScreenplay {
 
   @Test
   public void canLogin() {
-    user.performs(login());
+    user.does(new Login());
 
-    assertTrue(user.answers(areYouLoggedIn()));
+    assertTrue(user.checks(areYouLoggedIn()));
   }
 }

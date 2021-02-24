@@ -1,12 +1,11 @@
-package screenplay;
+package screenplay.login;
 
 import org.openqa.selenium.By;
+import screenplay.Actor;
+import screenplay.BrowseTheWeb;
+import screenplay.Task;
 
 public class Login implements Task {
-
-  public static Login login() {
-    return new Login();
-  }
 
   @Override
   public void performedBy(Actor actor) {
