@@ -28,7 +28,7 @@ public class OpenNewAccountTest extends BaseTest {
 
     assertEquals(
         accountsOverviewPage.getBalanceInCents(newAccountId),
-        10000
+        20000
     );
   }
 }
