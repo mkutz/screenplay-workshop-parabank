@@ -2,9 +2,6 @@ package pageobjects;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pageobject.AccountsOverviewPage;
-import pageobject.OpenNewAccountPage;
-import pageobject.TransferFundsPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,25 +14,36 @@ public class TransferFundsTest extends BaseTest {
 
     @Test
     public void transferFunds() {
-        int fromAccountIndex = 0;
-        int toAccountIndex = 1;
-        int amountInCents = 1000;
+        var fromAccountIndex = 0;
+        var toAccountIndex = 1;
+        var amountInCents = 1000;
 
-        OpenNewAccountPage openNewAccountPage = homePage.clickOpenNewAccountLink();
+        var openNewAccountPage = homePage
+            .clickOpenNewAccountLink();
         openNewAccountPage.openAccount();
 
-        AccountsOverviewPage accountsOverviewPage = homePage.clickAccountsOverviewLink();
-        int originalFromBalance = accountsOverviewPage.getAccountBalanceInCents(fromAccountIndex);
-        int originalToBalance = accountsOverviewPage.getAccountBalanceInCents(toAccountIndex);
+        var accountsOverviewPage = homePage
+            .clickAccountsOverviewLink();
+        var originalFromBalance = accountsOverviewPage
+            .getBalanceInCents(fromAccountIndex);
+        var originalToBalance = accountsOverviewPage
+            .getBalanceInCents(toAccountIndex);
 
-        TransferFundsPage transferFundsPage = homePage.clickTransferFundsLink();
-        transferFundsPage.transfer(amountInCents, fromAccountIndex, toAccountIndex);
+        var transferFundsPage = homePage
+            .clickTransferFundsLink();
+        transferFundsPage.transfer(
+            amountInCents, fromAccountIndex, toAccountIndex);
 
         homePage.clickAccountsOverviewLink();
 
-        assertEquals(accountsOverviewPage.getAccountBalanceInCents(fromAccountIndex),
+        int newFromBalance = accountsOverviewPage
+            .getBalanceInCents(fromAccountIndex);
+        int newToBalance = accountsOverviewPage
+            .getBalanceInCents(toAccountIndex);
+
+        assertEquals(newFromBalance,
                 originalFromBalance - amountInCents);
-        assertEquals(accountsOverviewPage.getAccountBalanceInCents(toAccountIndex),
+        assertEquals(newToBalance,
                 originalToBalance + amountInCents);
     }
 }
