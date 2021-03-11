@@ -10,26 +10,26 @@ import pageobject.HomePage;
 
 abstract public class BaseTest {
 
-    private static WebDriver webDriver;
-    protected HomePage homePage;
-    protected String testUsername = "john";
-    protected String testPassword = "demo";
+  private static WebDriver webDriver;
+  protected HomePage homePage;
+  protected String testUsername = "john";
+  protected String testPassword = "demo";
 
-    @BeforeAll
-    static void setUpWebDriver() {
-        WebDriverManager.chromiumdriver().setup();
-        webDriver = new ChromeDriver();
-    }
+  @BeforeAll
+  static void setUpWebDriver() {
+    WebDriverManager.chromiumdriver().setup();
+    webDriver = new ChromeDriver();
+  }
 
-    @BeforeEach
-    public void reset() {
-        webDriver.manage().deleteAllCookies();
-        webDriver.get("http://parabank.parasoft.com/");
-        homePage = new HomePage(webDriver);
-    }
+  @BeforeEach
+  public void reset() {
+    webDriver.manage().deleteAllCookies();
+    webDriver.get("http://parabank.parasoft.com/");
+    homePage = new HomePage(webDriver);
+  }
 
-    @AfterAll
-    static void tearDownWebDriver() {
-        webDriver.quit();
-    }
+  @AfterAll
+  static void tearDownWebDriver() {
+    webDriver.quit();
+  }
 }
