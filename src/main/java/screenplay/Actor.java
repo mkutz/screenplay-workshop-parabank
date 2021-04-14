@@ -1,4 +1,4 @@
-package sceenplay;
+package screenplay;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 public class Actor {
 
@@ -22,8 +24,8 @@ public class Actor {
 
   public Actor can(Ability ability) {
     abilities.put(ability.getClass(), ability);
-    log.debug("%s can %s"
-        .formatted(this, ability));
+    log.debug(format("%s can %s",
+        this, ability));
     return this;
   }
 
@@ -33,8 +35,8 @@ public class Actor {
         .orElseThrow(() ->
             new MissingAbilityException(this, abilityClass)
         );
-    log.debug("%s uses %s"
-        .formatted(this, ability));
+    log.debug(format("%s uses %s",
+        this, ability));
     return ability;
   }
 
@@ -42,24 +44,24 @@ public class Actor {
     try {
       task.performAs(this);
     } catch (Exception e) {
-      log.error("%s does %s ✘ %s"
-          .formatted(this, task, e.getMessage()));
+      log.error(format("%s does %s ✘ %s",
+          this, task, e.getMessage()));
       throw e;
     }
-    log.info("%s does %s ✔"
-        .formatted(this, task));
+    log.info(format("%s does %s ✔",
+        this, task));
     return this;
   }
 
   public <A> A checks(Question<A> question) {
     try {
       final var answer = question.answerAs(this);
-      log.info("%s checks %s ✔%n"
-          .formatted(this, question));
+      log.info(format("%s checks %s → %s ✔",
+          this, question, answer));
       return answer;
     } catch (Exception e) {
-      log.error("%s does %s ✘ %s"
-          .formatted(this, question, e.getMessage()));
+      log.error(format("%s does %s ✘ %s",
+          this, question, e.getMessage()));
       throw e;
     }
   }

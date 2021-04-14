@@ -1,10 +1,12 @@
-package sceenplay;
+package screenplay;
+
+import static java.lang.String.format;
 
 public class MissingAbilityException extends RuntimeException {
 
   public MissingAbilityException(
       Actor actor, Class<? extends Ability> abilityClass) {
-    super(actor + " misses the ability to " +
-        abilityClass.getSimpleName());
+    super(format(actor + "%s misses the ability to %s",
+        actor, abilityClass.getSimpleName()));
   }
 }

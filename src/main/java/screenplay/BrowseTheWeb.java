@@ -1,4 +1,4 @@
-package sceenplay;
+package screenplay;
 
 import org.openqa.selenium.WebDriver;
 
@@ -16,7 +16,7 @@ public class BrowseTheWeb implements Ability {
 
   @Override
   public String toString() {
-    return "browse the web with %s"
-        .formatted(webDriver.getClass().getSimpleName());
+    return "browse the web with " +
+        webDriver.getClass().getSimpleName();
   }
 }

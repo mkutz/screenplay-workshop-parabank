@@ -1,4 +1,4 @@
-package sceenplay;
+package screenplay;
 
 public interface Task {
 
